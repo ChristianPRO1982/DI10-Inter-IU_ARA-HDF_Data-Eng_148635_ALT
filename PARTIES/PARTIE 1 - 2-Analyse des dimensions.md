@@ -1,4 +1,4 @@
-# PARTIE1 - #2 - Analyse des **dimensions** et axes d’analyse associés
+# PARTIE 1 - #2 - Analyse des **dimensions** et axes d’analyse associés
 
 **Objectif**
 Pour chaque table de dimension, expliquer **ce qu’elle décrit** et **ce qu’elle permet d’analyser** par rapport à la table de faits `FactResellerSales`.

@@ -1,4 +1,4 @@
-# PARTIE1 - #1 - Analyse de la table FactResellerSales
+# PARTIE 1 - #1 - Analyse de la table FactResellerSales
 
 ## 1.1 Comprendre l’événement métier
 
