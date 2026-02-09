@@ -120,3 +120,11 @@ Tu peux intégrer directement ce tableau dans ta restitution :
 | DimEmployee  | Commercial    | Employé → Département                |
 | DimGeography | Géographie    | Ville → Région → Pays → Territoire   |
 | DimDate      | Temps         | Jour → Mois → Trimestre → Année      |
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%204-Indicateurs%20m%C3%A9tier%20(KPI).md)

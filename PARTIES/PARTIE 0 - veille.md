@@ -70,3 +70,12 @@ Bonnes pratiques essentielles :
 
 Les concepts de Data Warehouse et d’OLAP constituent le socle de l’analyse décisionnelle.  
 BigQuery fournit une implémentation cloud moderne de ces principes, permettant de construire une architecture analytique performante, scalable et adaptée au pilotage de l’activité métier.
+
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%201-Analyse%20de%20la%20table%20FactResellerSales.md)

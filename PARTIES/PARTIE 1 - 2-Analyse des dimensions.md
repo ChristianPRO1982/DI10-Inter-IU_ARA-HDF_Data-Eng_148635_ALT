@@ -139,3 +139,11 @@ Tu peux intégrer ce tableau tel quel dans ta restitution :
 | DimEmployee  | Décrit les commerciaux        | Performance par employé                  |
 | DimGeography | Décrit la localisation        | CA par pays, région, territoire          |
 | DimDate      | Décrit le temps               | Évolutions temporelles, saisonnalité     |
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%203-Axes%20d%E2%80%99analyse.md)

@@ -149,3 +149,11 @@ La granularité est techniquement définie par la combinaison suivante :
 * Le comptage des commandes se fait via `COUNT(DISTINCT SalesOrderNumber)`.
 * Les analyses produit, client, temps, géographie sont toutes possibles.
 * Les Data Marts pourront agréger **sans perte d’information**.
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%202-Analyse%20des%20dimensions.md)
