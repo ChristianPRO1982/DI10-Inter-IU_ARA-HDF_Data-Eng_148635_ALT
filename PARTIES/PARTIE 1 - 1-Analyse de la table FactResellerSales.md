@@ -111,3 +111,41 @@ Valeur de référence, dépendante du produit.
   * des **mesures FLOW (additives)** utilisables comme KPI,
   * des **mesures VPU / STOCK** réservées aux analyses ou calculs dérivés.
 * Les KPI doivent **exclusivement** s’appuyer sur les mesures FLOW.
+
+## Granularité du fait
+
+À partir de ce que nous avons validé :
+* une ligne = une ligne de commande ;
+* un produit peut apparaître plusieurs fois dans des commandes différentes ;
+* une commande peut contenir plusieurs lignes ;
+* les analyses sont temporelles, produit, revendeur, géographiques.
+
+**Granularité métier :**
+
+> 👉 La granularité de la table FactResellerSales est : une ligne de commande correspondant à la vente d’un produit donné, à un revendeur donné, pour une commande donnée, à une date donnée.
+
+**Granularité technique (combinaison de clés)**
+
+La granularité est techniquement définie par la combinaison suivante :
+
+| Clé                    | Rôle                                |
+| ---------------------- | ----------------------------------- |
+| `SalesOrderNumber`     | Identifie la commande               |
+| `SalesOrderLineNumber` | Identifie la ligne dans la commande |
+| `ProductKey`           | Produit vendu                       |
+| `ResellerKey`          | Revendeur                           |
+| `OrderDateKey`         | Date de commande                    |
+
+> 👉 Cette combinaison garantit :
+> * **unicité des lignes** ;
+> * **cohérence des agrégations** ;
+> * **compatibilité avec les KPI additifs**.
+
+*(Les autres clés temporelles — `ShipDateKey`, `DueDateKey` — enrichissent l’analyse mais ne changent pas le grain principal.)*
+
+---
+
+* Les mesures FLOW sont **additives** à ce grain.
+* Le comptage des commandes se fait via `COUNT(DISTINCT SalesOrderNumber)`.
+* Les analyses produit, client, temps, géographie sont toutes possibles.
+* Les Data Marts pourront agréger **sans perte d’information**.
