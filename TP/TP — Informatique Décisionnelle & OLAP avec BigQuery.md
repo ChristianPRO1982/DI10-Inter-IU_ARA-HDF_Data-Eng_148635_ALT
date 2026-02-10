@@ -1,31 +1,508 @@
 # TP — Informatique Décisionnelle & OLAP avec BigQuery
 
-## PARTIE 1 — Prise en main BigQuery
+## Exercice 1
+
+Afficher le chiffre d’affaires par ville.
 
 ```sql
 SELECT
-  date,
   city,
-  county,
-  category_name,
-  vendor_name,
-  sale_dollars,
-  bottles_sold
+  SUM(sale_dollars) AS total_sales
 FROM `bigquery-public-data.iowa_liquor_sales.sales`
-LIMIT 1000;
+GROUP BY city
+ORDER BY total_sales DESC;
 ```
 
-**Résultats**
+**Résultats (50 premières lignes) :**
+| City | Total Sales |
+|------|-------------|
+| DES MOINES | $601,509,367.60 |
+| CEDAR RAPIDS | $325,733,785.20 |
+| DAVENPORT | $245,475,375.20 |
+| WEST DES MOINES | $202,941,851.00 |
+| COUNCIL BLUFFS | $168,392,263.40 |
+| WATERLOO | $163,747,897.10 |
+| SIOUX CITY | $163,226,219.90 |
+| IOWA CITY | $157,452,732.50 |
+| DUBUQUE | $129,909,780.70 |
+| AMES | $129,467,804.50 |
+| ANKENY | $123,116,226.80 |
+| CORALVILLE | $101,969,974.30 |
+| CEDAR FALLS | $93,019,677.61 |
+| BETTENDORF | $76,867,673.80 |
+| MASON CITY | $73,641,020.66 |
+| WINDSOR HEIGHTS | $66,818,295.01 |
+| URBANDALE | $62,825,732.68 |
+| FORT DODGE | $57,477,685.33 |
+| MARSHALLTOWN | $51,926,325.16 |
+| MUSCATINE | $47,718,402.64 |
+| ALTOONA | $45,499,755.11 |
+| CLINTON | $45,284,492.04 |
+| BURLINGTON | $45,168,346.76 |
+| OTTUMWA | $40,712,331.21 |
+| MARION | $40,559,787.44 |
+| MOUNT VERNON | $38,240,774.34 |
+| DEWITT | $37,253,555.31 |
+| WAUKEE | $36,587,031.62 |
+| KEOKUK | $33,723,856.78 |
+| CARROLL | $33,684,670.32 |
+| SPIRIT LAKE | $33,460,853.86 |
+| INDIANOLA | $30,170,197.93 |
+| GRIMES | $30,004,653.02 |
+| NEWTON | $27,606,561.12 |
+| STORM LAKE | $26,936,697.23 |
+| SPENCER | $25,635,721.19 |
+| WAVERLY | $25,017,002.43 |
+| BOONE | $24,446,614.99 |
+| JOHNSTON | $23,857,532.00 |
+| CLEAR LAKE | $22,103,173.63 |
+| PLEASANT HILL | $21,568,362.99 |
+| WASHINGTON | $21,342,796.65 |
+| OSKALOOSA | $21,315,481.19 |
+| DECORAH | $21,207,054.70 |
+| DENISON | $21,080,126.73 |
+| NORTH LIBERTY | $19,131,325.02 |
+| MILFORD | $18,507,585.65 |
+| FORT MADISON | $17,816,591.96 |
+| PELLA | $17,628,473.63 |
+| ATLANTIC | $17,525,256.84 |
+| [...] | [...] |
 
-| date | city | county | category_name | vendor_name | sale_dollars | bottles_sold |
-|------|------|--------|-------|---------|---------|---------|
-| 28/11/2023 | AMES | STORY | CANADIAN WHISKIES | DIAGEO AMERICAS | -629,76 | -24 |
-| 29/01/2026 | WEST DES MOINES | POLK | AMERICAN VODKAS | FIFTH GENERATION DISTILLED SPIRITS, INC. | -360 | -24 |
-| 30/10/2023 | CLEARLAKE | CERRO GORDO | CANADIAN WHISKIES | DIAGEO AMERICAS | -368,88 | -12 |
-| 23/06/2023 | DAVENPORT | SCOTT | AMERICAN VODKAS | MCCORMICK DISTILLING CO. | -79,08 | -12 |
-| 08/11/2022 | MOUNT VERNON | LINN | AMERICAN VODKAS | FIFTH GENERATION INC | -237,12 | -12 |
-| 02/05/2023 | WASHINGTON | WASHINGTON | IMPORTED DISTILLED SPIRITS SPECIALTY | JOHN ERNEST DISTILLERY, INC. | -130,56 | -12 |
-| 15/07/2025 | DES MOINES | POLK | TRIPLE SEC | JIM BEAM BRANDS | -42 | -12 |
-| 26/09/2024 | INDIANOLA | WARREN | BOTTLED IN BOND BOURBON | HEAVEN HILL BRANDS | -166,5 | -6 |
-| 27/12/2023 | BOONE | BOONE | SPICED RUM | DIAGEO AMERICAS | -170,94 | -6 |
-| 08/06/2023 | MUSCATINE | MUSCATINE | AMERICAN VODKAS | SAZERAC COMPANY INC | -63,54 | -6 |
+## Exercice 2
+
+Afficher le chiffre d’affaires par county pour l’année 2022.
+
+```sql
+SELECT
+  city,
+  SUM(sale_dollars) AS total_sales
+FROM `bigquery-public-data.iowa_liquor_sales.sales`
+WHERE EXTRACT(YEAR FROM date) = 2022
+GROUP BY city
+ORDER BY total_sales DESC;
+```
+
+**Résultats (50 premières lignes) :**
+| City | Total Sales |
+|------|-------------|
+| DES MOINES | $52,362,942.85 |
+| CEDAR RAPIDS | $26,790,164.41 |
+| DAVENPORT | $20,210,618.18 |
+| WEST DES MOINES | $18,868,919.56 |
+| COUNCIL BLUFFS | $14,632,003.92 |
+| SIOUX CITY | $13,816,975.04 |
+| WATERLOO | $12,886,784.86 |
+| IOWA CITY | $12,727,531.26 |
+| ANKENY | $11,720,251.14 |
+| AMES | $11,154,579.17 |
+| DUBUQUE | $10,367,677.78 |
+| CORALVILLE | $9,042,575.57 |
+| CEDAR FALLS | $8,456,528.03 |
+| DEWITT | $6,553,557.13 |
+| MASON CITY | $6,408,833.32 |
+| URBANDALE | $5,954,799.61 |
+| WINDSOR HEIGHTS | $5,125,792.84 |
+| BETTENDORF | $5,097,482.02 |
+| FORT DODGE | $4,885,487.11 |
+| ALTOONA | $4,210,217.10 |
+| MARSHALLTOWN | $4,198,351.36 |
+| MOUNT VERNON | $4,148,752.98 |
+| MUSCATINE | $3,942,902.24 |
+| OTTUMWA | $3,912,239.31 |
+| BURLINGTON | $3,581,636.64 |
+| CLINTON | $3,556,969.47 |
+| WAUKEE | $3,536,384.51 |
+| MARION | $3,476,198.12 |
+| GRIMES | $3,398,731.15 |
+| CARROLL | $2,804,335.85 |
+| KEOKUK | $2,717,689.63 |
+| INDIANOLA | $2,632,718.05 |
+| NEWTON | $2,388,231.99 |
+| SPIRIT LAKE | $2,386,301.39 |
+| SPENCER | $2,175,817.81 |
+| BOONE | $2,161,733.85 |
+| STORM LAKE | $2,157,689.65 |
+| WAVERLY | $2,104,504.28 |
+| PLEASANT HILL | $1,958,345.17 |
+| LE MARS | $1,899,493.08 |
+| OSKALOOSA | $1,888,014.35 |
+| WASHINGTON | $1,823,706.97 |
+| DENISON | $1,813,651.02 |
+| JOHNSTON | $1,786,180.36 |
+| MILFORD | $1,718,932.90 |
+| DECORAH | $1,661,653.85 |
+| NORTH LIBERTY | $1,640,531.54 |
+| ARNOLDS PARK | $1,634,672.53 |
+| PELLA | $1,631,319.14 |
+| FORT MADISON | $1,488,618.94 |
+| [...] | [...] |
+
+## Exercice 3
+
+Afficher les ventes pour :
+* catégories Whiskey et Vodka
+* counties Polk et Linn
+```sql
+SELECT
+  county,
+  category_name,
+  SUM(sale_dollars) AS total_sales
+FROM `bigquery-public-data.iowa_liquor_sales.sales`
+WHERE (
+  UPPER(category_name) LIKE '%VODKA%'
+  OR UPPER(category_name) LIKE '%WHISKEY%'
+)
+  AND UPPER(county) IN ('POLK', 'LINN')
+GROUP BY county, category_name
+ORDER BY county, category_name;
+```
+
+**Résultats :**
+| County | Category Name | Total Sales |
+|--------|---------------|-------------|
+| LINN | 100 PROOF VODKA | $577,086.84 |
+| LINN | AMERICAN FLAVORED VODKA | $7,390,506.21 |
+| LINN | AMERICAN VODKAS | $50,506,320.97 |
+| LINN | IMPORTED FLAVORED VODKA | $4,858,168.68 |
+| LINN | IMPORTED VODKA - MISC | $2,836,866.65 |
+| LINN | IMPORTED VODKAS | $18,693,896.46 |
+| LINN | LOW PROOF VODKA | $13,361.20 |
+| LINN | OTHER PROOF VODKA | $19,199.61 |
+| LINN | VODKA 80 PROOF | $13,397,135.18 |
+| LINN | VODKA FLAVORED | $3,257,489.98 |
+| LINN | WHISKEY LIQUEUR | $21,642,294.18 |
+| POLK | 100 PROOF VODKA | $1,571,485.47 |
+| POLK | AMERICAN FLAVORED VODKA | $25,826,702.82 |
+| POLK | AMERICAN VODKAS | $122,855,691.50 |
+| POLK | IMPORTED FLAVORED VODKA | $19,179,385.82 |
+| POLK | IMPORTED VODKA - CHERRY | $1,777.44 |
+| POLK | IMPORTED VODKA - MISC | $10,284,423.23 |
+| POLK | IMPORTED VODKAS | $57,564,546.42 |
+| POLK | LOW PROOF VODKA | $34,473.33 |
+| POLK | OTHER PROOF VODKA | $36,157.59 |
+| POLK | VODKA 80 PROOF | $33,189,943.82 |
+| POLK | VODKA FLAVORED | $9,625,113.27 |
+| POLK | WHISKEY LIQUEUR | $59,864,563.97 |
+
+## Exercice 4
+
+Afficher :
+* a) les ventes par county
+* b) le total toutes counties confondues
+```sql
+SELECT
+  county,
+  SUM(sale_dollars) AS total_sales,
+  GROUPING(county) AS is_total
+FROM `bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY ROLLUP(county)
+ORDER BY is_total, county;
+```
+
+**Résultats :**
+| County | Total Sales | Is Total |
+|--------|-------------|----------|
+|  | $20,932,452.93 | 0 |
+| ADAIR | $6,615,505.72 | 0 |
+| ADAMS | $2,277,596.76 | 0 |
+| ALLAMAKEE | $13,586,892.53 | 0 |
+| APPANOOSE | $13,612,795.41 | 0 |
+| AUDUBON | $2,902,159.65 | 0 |
+| BENTON | $16,181,326.89 | 0 |
+| BLACK HAWK | $268,549,574.20 | 0 |
+| BOONE | $29,529,828.83 | 0 |
+| BREMER | $29,967,630.04 | 0 |
+| BUCHANAN | $19,753,506.07 | 0 |
+| BUENA VISTA | $28,888,026.29 | 0 |
+| BUTLER | $5,409,264.46 | 0 |
+| CALHOUN | $5,798,103.27 | 0 |
+| CARROLL | $38,977,024.33 | 0 |
+| CASS | $19,122,627.12 | 0 |
+| CEDAR | $10,694,025.19 | 0 |
+| CERRO GORDO | $101,775,627.90 | 0 |
+| CHEROKEE | $11,811,363.87 | 0 |
+| CHICKASAW | $7,157,325.99 | 0 |
+| CLARKE | $11,824,863.93 | 0 |
+| CLAY | $25,711,921.24 | 0 |
+| CLAYTON | $10,744,961.98 | 0 |
+| CLINTON | $86,571,044.65 | 0 |
+| CRAWFORD | $21,815,478.26 | 0 |
+| DALLAS | $125,105,021.60 | 0 |
+| DAVIS | $1,673,022.46 | 0 |
+| DECATUR | $2,897,591.28 | 0 |
+| DELAWARE | $16,654,002.02 | 0 |
+| DES MOINES | $57,584,801.60 | 0 |
+| DICKINSON | $67,999,324.08 | 0 |
+| DUBUQUE | $145,212,551.60 | 0 |
+| EL PASO | $31.14 | 0 |
+| EMMET | $9,665,849.40 | 0 |
+| FAYETTE | $19,547,942.02 | 0 |
+| FLOYD | $18,642,649.74 | 0 |
+| FRANKLIN | $7,811,087.22 | 0 |
+| FREMONT | $1,386,697.12 | 0 |
+| GREENE | $8,499,718.31 | 0 |
+| GRUNDY | $5,129,609.08 | 0 |
+| GUTHRIE | $6,652,131.77 | 0 |
+| HAMILTON | $14,316,090.29 | 0 |
+| HANCOCK | $6,573,479.32 | 0 |
+| HARDIN | $28,885,187.51 | 0 |
+| HARRISON | $8,944,125.21 | 0 |
+| HENRY | $19,648,201.28 | 0 |
+| HOWARD | $12,422,845.35 | 0 |
+| HUMBOLDT | $12,380,677.26 | 0 |
+| IDA | $8,989,269.17 | 0 |
+| IOWA | $20,445,864.66 | 0 |
+| JACKSON | $19,070,530.50 | 0 |
+| JASPER | $31,344,348.30 | 0 |
+| JEFFERSON | $16,292,796.75 | 0 |
+| JOHNSON | $289,668,025.80 | 0 |
+| JONES | $20,395,870.09 | 0 |
+| KEOKUK | $3,095,706.00 | 0 |
+| KOSSUTH | $26,337,428.88 | 0 |
+| LEE | $55,690,019.71 | 0 |
+| LINN | $426,935,325.30 | 0 |
+| LOUISA | $3,764,256.50 | 0 |
+| LUCAS | $8,199,182.31 | 0 |
+| LYON | $12,292,090.74 | 0 |
+| MADISON | $13,299,005.00 | 0 |
+| MAHASKA | $20,286,579.05 | 0 |
+| MARION | $36,843,025.32 | 0 |
+| MARSHALL | $54,730,795.91 | 0 |
+| MILLS | $8,769,805.19 | 0 |
+| MITCHELL | $6,872,833.27 | 0 |
+| MONONA | $8,793,253.94 | 0 |
+| MONROE | $5,901,065.39 | 0 |
+| MONTGOMERY | $11,282,563.90 | 0 |
+| MUSCATINE | $52,392,885.19 | 0 |
+| O'BRIEN | $20,438,910.12 | 0 |
+| OSCEOLA | $4,036,406.31 | 0 |
+| PAGE | $19,262,226.42 | 0 |
+| PALO ALTO | $11,495,808.55 | 0 |
+| PLYMOUTH | $26,848,309.70 | 0 |
+| POCAHONTAS | $5,348,833.85 | 0 |
+| POLK | $1,134,117,321.00 | 0 |
+| POTTAWATTAMIE | $178,700,283.60 | 0 |
+| POWESHIEK | $24,245,887.35 | 0 |
+| RINGGOLD | $2,611,301.35 | 0 |
+| SAC | $9,865,643.99 | 0 |
+| SCOTT | $341,235,049.00 | 0 |
+| SHELBY | $13,472,734.81 | 0 |
+| SIOUX | $28,792,247.48 | 0 |
+| STORY | $146,142,350.90 | 0 |
+| TAMA | $11,660,617.44 | 0 |
+| TAYLOR | $1,921,947.03 | 0 |
+| UNION | $17,086,560.76 | 0 |
+| VAN BUREN | $3,009,677.09 | 0 |
+| WAPELLO | $45,336,070.85 | 0 |
+| WARREN | $46,253,935.91 | 0 |
+| WASHINGTON | $27,697,638.97 | 0 |
+| WAYNE | $2,530,687.17 | 0 |
+| WEBSTER | $53,578,427.80 | 0 |
+| WINNEBAGO | $11,728,193.16 | 0 |
+| WINNESHIEK | $22,751,057.11 | 0 |
+| WOODBURY | $170,293,526.90 | 0 |
+| WORTH | $5,067,391.58 | 0 |
+| WRIGHT | $11,066,951.63 | 0 |
+| **TOTAL** | **$4,966,132,089.00** | **1** |
+
+## Exercice 5
+
+Classer les counties par chiffre d’affaires croissant.
+```sql
+SELECT
+  county,
+  SUM(sale_dollars) AS total_sales
+FROM `bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY county
+ORDER BY total_sales ASC;
+```
+
+**Résultats (50 premières lignes + 2 dernières lignes) :**
+| County | Total Sales |
+|--------|-------------|
+| EL PASO | $31.14 |
+| FREMONT | $1,386,697.12 |
+| DAVIS | $1,673,022.46 |
+| TAYLOR | $1,921,947.03 |
+| ADAMS | $2,277,596.76 |
+| WAYNE | $2,530,687.17 |
+| RINGGOLD | $2,611,301.35 |
+| DECATUR | $2,897,591.28 |
+| AUDUBON | $2,902,159.65 |
+| VAN BUREN | $3,009,677.09 |
+| KEOKUK | $3,095,706.00 |
+| LOUISA | $3,764,256.50 |
+| OSCEOLA | $4,036,406.31 |
+| WORTH | $5,067,391.58 |
+| GRUNDY | $5,129,609.08 |
+| POCAHONTAS | $5,348,833.85 |
+| BUTLER | $5,409,264.46 |
+| CALHOUN | $5,798,103.27 |
+| MONROE | $5,901,065.39 |
+| HANCOCK | $6,573,479.32 |
+| ADAIR | $6,615,505.72 |
+| GUTHRIE | $6,652,131.77 |
+| MITCHELL | $6,872,833.27 |
+| CHICKASAW | $7,157,325.99 |
+| FRANKLIN | $7,811,087.22 |
+| LUCAS | $8,199,182.31 |
+| GREENE | $8,499,718.31 |
+| MILLS | $8,769,805.19 |
+| MONONA | $8,793,253.94 |
+| HARRISON | $8,944,125.21 |
+| IDA | $8,989,269.17 |
+| EMMET | $9,665,849.40 |
+| SAC | $9,865,643.99 |
+| CEDAR | $10,694,025.19 |
+| CLAYTON | $10,744,961.98 |
+| WRIGHT | $11,066,951.63 |
+| MONTGOMERY | $11,282,563.90 |
+| PALO ALTO | $11,495,808.55 |
+| TAMA | $11,660,617.44 |
+| WINNEBAGO | $11,728,193.16 |
+| CHEROKEE | $11,811,363.87 |
+| CLARKE | $11,824,863.93 |
+| LYON | $12,292,090.74 |
+| HUMBOLDT | $12,380,677.26 |
+| HOWARD | $12,422,845.35 |
+| MADISON | $13,299,005.00 |
+| SHELBY | $13,472,734.81 |
+| ALLAMAKEE | $13,586,892.53 |
+| APPANOOSE | $13,612,795.41 |
+| HAMILTON | $14,316,090.29 |
+| [...] | [...] |
+| LINN | $426,935,325.30 |
+| POLK | $1,134,117,321.00 |
+
+## Exercice 6
+
+Filtrer uniquement les counties dont le chiffre d’affaires dépasse 10 millions.
+```sql
+SELECT
+  county,
+  SUM(sale_dollars) AS total_sales
+FROM `bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY county
+HAVING SUM(sale_dollars) > 10000000
+ORDER BY total_sales DESC;
+```
+
+**Résultats :**
+| County | Total Sales |
+|--------|-------------|
+| POLK | $1,134,117,321.00 |
+| LINN | $426,935,325.30 |
+| SCOTT | $341,235,049.00 |
+| JOHNSON | $289,668,025.80 |
+| BLACK HAWK | $268,549,574.20 |
+| POTTAWATTAMIE | $178,700,283.60 |
+| WOODBURY | $170,293,526.90 |
+| STORY | $146,142,350.90 |
+| DUBUQUE | $145,212,551.60 |
+| DALLAS | $125,105,021.60 |
+| CERRO GORDO | $101,775,627.90 |
+| CLINTON | $86,571,044.65 |
+| DICKINSON | $67,999,324.08 |
+| DES MOINES | $57,584,801.60 |
+| LEE | $55,690,019.71 |
+| MARSHALL | $54,730,795.91 |
+| WEBSTER | $53,578,427.80 |
+| MUSCATINE | $52,392,885.19 |
+| WARREN | $46,253,935.91 |
+| WAPELLO | $45,336,070.85 |
+| CARROLL | $38,977,024.33 |
+| MARION | $36,843,025.32 |
+| JASPER | $31,344,348.30 |
+| BREMER | $29,967,630.04 |
+| BOONE | $29,529,828.83 |
+| BUENA VISTA | $28,888,026.29 |
+| HARDIN | $28,885,187.51 |
+| SIOUX | $28,792,247.48 |
+| WASHINGTON | $27,697,638.97 |
+| PLYMOUTH | $26,848,309.70 |
+| KOSSUTH | $26,337,428.88 |
+| CLAY | $25,711,921.24 |
+| POWESHIEK | $24,245,887.35 |
+| WINNESHIEK | $22,751,057.11 |
+| CRAWFORD | $21,815,478.26 |
+| IOWA | $20,445,864.66 |
+| O'BRIEN | $20,438,910.12 |
+| JONES | $20,395,870.09 |
+| MAHASKA | $20,286,579.05 |
+| BUCHANAN | $19,753,506.07 |
+| HENRY | $19,648,201.28 |
+| FAYETTE | $19,547,942.02 |
+| PAGE | $19,262,226.42 |
+| CASS | $19,122,627.12 |
+| JACKSON | $19,070,530.50 |
+| FLOYD | $18,642,649.74 |
+| UNION | $17,086,560.76 |
+| DELAWARE | $16,654,002.02 |
+| JEFFERSON | $16,292,796.75 |
+| BENTON | $16,181,326.89 |
+
+## Exercice 7
+
+Calculer la moyenne des ventes par catégorie.
+```sql
+SELECT
+  category_name,
+  AVG(sale_dollars) AS avg_sale_dollars
+FROM `bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY category_name
+ORDER BY avg_sale_dollars DESC;
+```
+
+| Category Name | Avg Sale Dollars |
+|---|---|
+| IOWA DISTILLERY WHISKIES | $2,754.85 |
+| AMERICAN WHISKIES | $1,881.00 |
+| SCHNAPPS - IMPORTED | $793.16 |
+| AMARETTO - IMPORTED | $690.89 |
+| IMPORTED WHISKIES | $555.78 |
+| IMPORTED GINS | $406.15 |
+| SPECIAL ORDER ITEMS | $401.50 |
+| IMPORTED DISTILLED SPIRITS SPECIALTY | $374.18 |
+| DELISTED / SPECIAL ORDER ITEMS | $333.00 |
+| JAPANESE WHISKY | $316.46 |
+| DECANTERS & SPECIALTY PACKAGES | $300.03 |
+| IRISH WHISKIES | $259.71 |
+| IMPORTED BRANDIES | $256.43 |
+| 100% AGAVE TEQUILA | $231.40 |
+| TENNESSEE WHISKIES | $223.95 |
+| STRAIGHT RYE WHISKIES | $208.46 |
+| SINGLE BARREL BOURBON WHISKIES | $206.65 |
+| TEMPORARY & SPECIALTY PACKAGES | $200.33 |
+| SPICED RUM | $198.94 |
+| IMPORTED VODKAS | $196.87 |
+| IOWA DISTILLERIES | $195.35 |
+| HIGH PROOF BEER - AMERICAN | $194.93 |
+|  | $192.34 |
+| SINGLE MALT SCOTCH | $188.94 |
+| IMPORTED DRY GINS | $182.64 |
+| MIXTO TEQUILA | $182.49 |
+| CANADIAN WHISKIES | $181.29 |
+| IMPORTED CORDIALS & LIQUEURS | $178.35 |
+| FLAVORED GIN | $177.88 |
+| CORN WHISKIES | $170.70 |
+| IMPORTED VODKA - CHERRY | $167.77 |
+| IMPORTED GRAPE BRANDIES | $164.35 |
+| STRAIGHT BOURBON WHISKIES | $162.06 |
+| WHISKEY LIQUEUR | $160.53 |
+| MEZCAL | $160.18 |
+| TEQUILA | $157.32 |
+| MISC. IMPORTED CORDIALS & LIQUEURS | $153.74 |
+| AMERICAN VODKAS | $152.60 |
+| AMERICAN DISTILLED SPIRITS SPECIALTY | $152.38 |
+| IMPORTED SCHNAPPS | $151.33 |
+| CREAM LIQUEURS | $151.16 |
+| SCOTCH WHISKIES | $141.99 |
+| DISTILLED SPIRITS SPECIALTY | $139.73 |
+| COFFEE LIQUEURS | $138.97 |
+| IMPORTED AMARETTO | $135.45 |
+| IMPORTED FLAVORED VODKA | $132.87 |
+| BOTTLED IN BOND BOURBON | $131.91 |
+| AMERICAN ALCOHOL | $121.84 |
+| FLAVORED RUM | $120.73 |
+| WHITE RUM | $120.42 |
+| [...] | [...] |
