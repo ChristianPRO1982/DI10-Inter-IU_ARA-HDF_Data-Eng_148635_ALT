@@ -74,67 +74,67 @@ Afficher le chiffre d’affaires par county pour l’année 2022.
 
 ```sql
 SELECT
-  city,
+  county,
   SUM(sale_dollars) AS total_sales
 FROM `bigquery-public-data.iowa_liquor_sales.sales`
 WHERE EXTRACT(YEAR FROM date) = 2022
-GROUP BY city
+GROUP BY county
 ORDER BY total_sales DESC;
 ```
 
 **Résultats (50 premières lignes) :**
-| City | Total Sales |
-|------|-------------|
-| DES MOINES | $52,362,942.85 |
-| CEDAR RAPIDS | $26,790,164.41 |
-| DAVENPORT | $20,210,618.18 |
-| WEST DES MOINES | $18,868,919.56 |
-| COUNCIL BLUFFS | $14,632,003.92 |
-| SIOUX CITY | $13,816,975.04 |
-| WATERLOO | $12,886,784.86 |
-| IOWA CITY | $12,727,531.26 |
-| ANKENY | $11,720,251.14 |
-| AMES | $11,154,579.17 |
-| DUBUQUE | $10,367,677.78 |
-| CORALVILLE | $9,042,575.57 |
-| CEDAR FALLS | $8,456,528.03 |
-| DEWITT | $6,553,557.13 |
-| MASON CITY | $6,408,833.32 |
-| URBANDALE | $5,954,799.61 |
-| WINDSOR HEIGHTS | $5,125,792.84 |
-| BETTENDORF | $5,097,482.02 |
-| FORT DODGE | $4,885,487.11 |
-| ALTOONA | $4,210,217.10 |
-| MARSHALLTOWN | $4,198,351.36 |
-| MOUNT VERNON | $4,148,752.98 |
-| MUSCATINE | $3,942,902.24 |
-| OTTUMWA | $3,912,239.31 |
-| BURLINGTON | $3,581,636.64 |
-| CLINTON | $3,556,969.47 |
-| WAUKEE | $3,536,384.51 |
-| MARION | $3,476,198.12 |
-| GRIMES | $3,398,731.15 |
-| CARROLL | $2,804,335.85 |
-| KEOKUK | $2,717,689.63 |
-| INDIANOLA | $2,632,718.05 |
-| NEWTON | $2,388,231.99 |
-| SPIRIT LAKE | $2,386,301.39 |
-| SPENCER | $2,175,817.81 |
-| BOONE | $2,161,733.85 |
-| STORM LAKE | $2,157,689.65 |
-| WAVERLY | $2,104,504.28 |
-| PLEASANT HILL | $1,958,345.17 |
-| LE MARS | $1,899,493.08 |
-| OSKALOOSA | $1,888,014.35 |
-| WASHINGTON | $1,823,706.97 |
-| DENISON | $1,813,651.02 |
-| JOHNSTON | $1,786,180.36 |
-| MILFORD | $1,718,932.90 |
-| DECORAH | $1,661,653.85 |
-| NORTH LIBERTY | $1,640,531.54 |
-| ARNOLDS PARK | $1,634,672.53 |
-| PELLA | $1,631,319.14 |
-| FORT MADISON | $1,488,618.94 |
+| County | Total Sales |
+|--------|-------------|
+| POLK | $100,630,597.10 |
+| LINN | $36,039,443.13 |
+| SCOTT | $27,283,973.42 |
+| JOHNSON | $24,752,492.46 |
+| BLACK HAWK | $22,484,158.45 |
+| POTTAWATTAMIE | $15,574,304.67 |
+| WOODBURY | $14,524,712.69 |
+| DALLAS | $12,992,381.99 |
+| STORY | $12,738,293.64 |
+| DUBUQUE | $11,878,676.09 |
+| CLINTON | $10,485,150.18 |
+| CERRO GORDO | $8,647,495.46 |
+| DICKINSON | $5,892,877.44 |
+| DES MOINES | $4,644,157.60 |
+| WEBSTER | $4,641,723.37 |
+| LEE | $4,546,814.09 |
+| MARSHALL | $4,498,574.69 |
+| MUSCATINE | $4,405,985.59 |
+| WARREN | $4,316,894.94 |
+| WAPELLO | $4,058,013.30 |
+| CARROLL | $3,344,233.62 |
+| MARION | $3,317,896.55 |
+| JASPER | $2,716,349.41 |
+| WASHINGTON | $2,491,698.92 |
+| BREMER | $2,445,325.23 |
+| BOONE | $2,430,915.20 |
+| SIOUX | $2,383,212.84 |
+| BUENA VISTA | $2,338,668.78 |
+| HARDIN | $2,328,295.89 |
+| PLYMOUTH | $2,303,445.61 |
+| CLAY | $2,175,817.81 |
+| KOSSUTH | $2,131,212.52 |
+| POWESHIEK | $2,042,511.50 |
+| MAHASKA | $1,965,319.80 |
+| CRAWFORD | $1,813,651.02 |
+| WINNESHIEK | $1,762,628.05 |
+| JONES | $1,762,132.91 |
+| HENRY | $1,676,480.03 |
+| FAYETTE | $1,669,586.82 |
+| CASS | $1,587,377.92 |
+| IOWA | $1,582,803.94 |
+| JACKSON | $1,579,427.66 |
+| O'BRIEN | $1,570,270.20 |
+| FLOYD | $1,527,420.07 |
+| DELAWARE | $1,476,504.23 |
+| BENTON | $1,463,487.03 |
+| JEFFERSON | $1,462,213.81 |
+| UNION | $1,455,679.85 |
+| PAGE | $1,452,368.36 |
+| BUCHANAN | $1,434,828.68 |
 | [...] | [...] |
 
 ## Exercice 3
@@ -191,11 +191,17 @@ Afficher :
 * b) le total toutes counties confondues
 ```sql
 SELECT
-  county,
-  SUM(sale_dollars) AS total_sales,
-  GROUPING(county) AS is_total
-FROM `bigquery-public-data.iowa_liquor_sales.sales`
-GROUP BY ROLLUP(county)
+  IF(is_total = 1, 'TOTAL', county) AS county,
+  total_sales,
+  is_total
+FROM (
+  SELECT
+    county,
+    SUM(sale_dollars) AS total_sales,
+    GROUPING(county) AS is_total
+  FROM `bigquery-public-data.iowa_liquor_sales.sales`
+  GROUP BY ROLLUP(county)
+)
 ORDER BY is_total, county;
 ```
 
@@ -452,6 +458,8 @@ FROM `bigquery-public-data.iowa_liquor_sales.sales`
 GROUP BY category_name
 ORDER BY avg_sale_dollars DESC;
 ```
+
+> ***Il s’agit de la moyenne du montant des ventes unitaires par catégorie, et non de la moyenne des chiffres d’affaires agrégés.***
 
 | Category Name | Avg Sale Dollars |
 |---|---|
