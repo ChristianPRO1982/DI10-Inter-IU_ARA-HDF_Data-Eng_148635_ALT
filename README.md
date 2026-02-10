@@ -24,18 +24,6 @@
 
 [Cas d’étude 3 — Du relationnel au décisionnel (étoile puis flocon)](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%203%20%E2%80%94%20Du%20relationnel%20au%20d%C3%A9cisionnel%20(%C3%A9toile%20puis%20flocon).md)
 
-## PARTIE 2
+## TP
 
-[]()
-
-## PARTIE 3
-
-[]()
-
-## PARTIE 4
-
-[]()
-
-## PARTIE 5
-
-[]()
+[TP — Informatique Décisionnelle & OLAP avec BigQuery](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TP/TP%20%E2%80%94%20Informatique%20D%C3%A9cisionnelle%20%26%20OLAP%20avec%20BigQuery.md)

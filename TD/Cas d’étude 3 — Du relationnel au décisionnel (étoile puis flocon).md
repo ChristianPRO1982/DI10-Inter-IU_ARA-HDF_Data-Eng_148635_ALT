@@ -201,3 +201,11 @@ erDiagram
 ✔️ Granularité correcte
 ✔️ Étoile et flocon maîtrisés
 ✔️ Argumentation claire (gains / pertes)
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TP/TP%20%E2%80%94%20Informatique%20D%C3%A9cisionnelle%20%26%20OLAP%20avec%20BigQuery.md)
