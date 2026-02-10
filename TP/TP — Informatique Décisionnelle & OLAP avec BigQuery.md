@@ -205,6 +205,8 @@ FROM (
 ORDER BY is_total, county;
 ```
 
+> ***Note : il y a des enregistrements avec "county" à NULL***
+
 **Résultats :**
 | County | Total Sales | Is Total |
 |--------|-------------|----------|
