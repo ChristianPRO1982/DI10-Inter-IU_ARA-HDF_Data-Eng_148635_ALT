@@ -1,12 +1,12 @@
 # Construction d’un Data Warehouse et de Data Marts avec BigQuery
 
-## rendu
+***RENDU***
 
-### PARTIE 0
+## PARTIE 0
 
 [veille](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%200%20-%20veille.md)
 
-### PARTIE 1
+## PARTIE 1
 
 [#1 - Analyse de la table FactResellerSales](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%201-Analyse%20de%20la%20table%20FactResellerSales.md)
 
@@ -24,18 +24,18 @@
 
 [Cas d’étude 3 — Du relationnel au décisionnel (étoile puis flocon)](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%203%20%E2%80%94%20Du%20relationnel%20au%20d%C3%A9cisionnel%20(%C3%A9toile%20puis%20flocon).md)
 
-### PARTIE 2
+## PARTIE 2
 
 []()
 
-### PARTIE 3
+## PARTIE 3
 
 []()
 
-### PARTIE 4
+## PARTIE 4
 
 []()
 
-### PARTIE 5
+## PARTIE 5
 
 []()
