@@ -113,3 +113,11 @@ Rappel — seules les **mesures FLOW additives** sont utilisées :
 | Remises             | `SUM(DiscountAmount)`                                 | Produit / Client |
 | Nombre de commandes | `COUNT(DISTINCT SalesOrderNumber)`                    | Temps / Client   |
 | Panier moyen        | `SUM(SalesAmount) / COUNT(DISTINCT SalesOrderNumber)` | Temps / Client   |
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%201%20%E2%80%94%20Consultations%20m%C3%A9dicales.md)
