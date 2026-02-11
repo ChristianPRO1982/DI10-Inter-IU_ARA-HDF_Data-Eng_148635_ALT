@@ -66,6 +66,44 @@ Bonnes pratiques essentielles :
 
 ---
 
+## 🔹 Complément 1 — Notion de granularité (à ajouter dans la partie Data Warehouse)
+
+À insérer après la description des tables de faits :
+
+> Un élément fondamental dans la conception d’un Data Warehouse est la **définition de la granularité** de la table de faits.
+> La granularité précise ce que représente exactement une ligne de la table de faits (par exemple : une ligne de commande, une vente par produit et par jour, etc.).
+> Cette décision structure toute la modélisation et conditionne les possibilités d’agrégation.
+
+---
+
+## 🔹 Complément 2 — Hiérarchies dimensionnelles (à ajouter dans la partie OLAP)
+
+À insérer après la description des opérations OLAP :
+
+> Les dimensions sont souvent organisées selon des **hiérarchies naturelles**, permettant les opérations de roll-up et drill-down.
+> Exemple :
+>
+> * Temps : Jour → Mois → Trimestre → Année
+> * Géographie : Ville → Région → Pays
+>   Ces hiérarchies structurent les niveaux d’agrégation possibles dans l’analyse multidimensionnelle.
+
+---
+
+## 🔹 Complément 3 — Extensions SQL OLAP (à ajouter dans la partie SQL / BigQuery)
+
+À insérer dans la partie OLAP ou BigQuery :
+
+> Le standard SQL intègre des extensions OLAP permettant de produire plusieurs niveaux d’agrégation en une seule requête :
+>
+> * `ROLLUP` : agrégation hiérarchique automatique ;
+> * `CUBE` : calcul de toutes les combinaisons d’agrégats ;
+> * `GROUPING SETS` : définition explicite de plusieurs regroupements ;
+> * Fonctions analytiques `OVER()` permettant des calculs sur fenêtres (classements, cumul, ratios).
+>
+> BigQuery implémente largement ces extensions, ce qui en fait un moteur ROLAP particulièrement adapté aux besoins décisionnels.
+
+---
+
 ## Conclusion
 
 Les concepts de Data Warehouse et d’OLAP constituent le socle de l’analyse décisionnelle.  

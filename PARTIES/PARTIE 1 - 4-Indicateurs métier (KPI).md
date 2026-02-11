@@ -60,7 +60,7 @@ Rappel — seules les **mesures FLOW additives** sont utilisées :
 
 **Définition**
 
-> **Marge brute = SUM(SalesAmount - TotalProductCost)**
+> **Marge brute = SUM(SalesAmount) - SUM(TotalProductCost)**
 
 ---
 
@@ -109,7 +109,7 @@ Rappel — seules les **mesures FLOW additives** sont utilisées :
 | Chiffre d’affaires  | `SUM(SalesAmount)`                                    | Temps            |
 | Volume de ventes    | `SUM(OrderQuantity)`                                  | Produit          |
 | Coût total          | `SUM(TotalProductCost)`                               | Produit / Temps  |
-| Marge brute         | `SUM(SalesAmount - TotalProductCost)`                 | Produit / Client |
+| Marge brute         | `SUM(SalesAmount) - SUM(TotalProductCost)`            | Produit / Client |
 | Remises             | `SUM(DiscountAmount)`                                 | Produit / Client |
 | Nombre de commandes | `COUNT(DISTINCT SalesOrderNumber)`                    | Temps / Client   |
 | Panier moyen        | `SUM(SalesAmount) / COUNT(DISTINCT SalesOrderNumber)` | Temps / Client   |
