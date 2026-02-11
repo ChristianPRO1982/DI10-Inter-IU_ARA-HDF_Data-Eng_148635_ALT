@@ -1,5 +1,14 @@
 # PARTIE 1 - #1 - Analyse de la table FactResellerSales
 
+## EDA
+
+Voici les talbeaux générés :
+* ./brief/EDA/EDA_DimEmployee.html
+* ./brief/EDA/EDA_DimGeography.html
+* ./brief/EDA/EDA_DimProduct.html
+* ./brief/EDA/EDA_DimReseller.html
+* ./brief/EDA/EDA_FactResellerSales.html
+
 ## 1.1 Comprendre l’événement métier
 
 > **Une ligne de la table `FactResellerSales` correspond à une ligne de commande de vente, c’est-à-dire la vente d’un produit donné à un revendeur donné, pour une commande donnée, à une date donnée.**
