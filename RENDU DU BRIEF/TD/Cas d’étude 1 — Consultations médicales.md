@@ -221,4 +221,4 @@ Patiente | Mois | Coût total
 ---
 ---
 
-> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%202%20%E2%80%94%20Analyse%20des%20salaires.md)
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/TD/Cas%20d%E2%80%99%C3%A9tude%202%20%E2%80%94%20Analyse%20des%20salaires.md)

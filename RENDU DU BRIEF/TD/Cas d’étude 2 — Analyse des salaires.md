@@ -149,4 +149,4 @@ CUBE SALARY
 ---
 ---
 
-> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%203%20%E2%80%94%20Du%20relationnel%20au%20d%C3%A9cisionnel%20(%C3%A9toile%20puis%20flocon).md)
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/TD/Cas%20d%E2%80%99%C3%A9tude%203%20%E2%80%94%20Du%20relationnel%20au%20d%C3%A9cisionnel%20(%C3%A9toile%20puis%20flocon).md)

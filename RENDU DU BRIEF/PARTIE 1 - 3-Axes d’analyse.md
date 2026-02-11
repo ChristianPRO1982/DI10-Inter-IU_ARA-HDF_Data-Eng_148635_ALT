@@ -127,4 +127,4 @@ Tu peux intégrer directement ce tableau dans ta restitution :
 ---
 ---
 
-> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%204-Indicateurs%20m%C3%A9tier%20(KPI).md)
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARRENDU%20DU%20BRIEFTIES/PARTIE%201%20-%204-Indicateurs%20m%C3%A9tier%20(KPI).md)
