@@ -1,4 +1,4 @@
-# PARTIE 1
+# PARTIE 2 - 1-Création des schémas
 
 ## 🧭 Étape 1 — Création propre de l’environnement GCP
 
@@ -486,3 +486,11 @@ FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`;
 **résultats :**
 
 1	0	0	0	0	0	0	0	0
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%202%20-%202-R%C3%A9ponses%20aux%20questions.md)

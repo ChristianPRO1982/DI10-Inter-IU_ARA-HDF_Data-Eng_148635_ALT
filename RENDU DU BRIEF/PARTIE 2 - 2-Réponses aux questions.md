@@ -1,4 +1,4 @@
-# PARTIE 1
+# PARTIE 2 - 2-Réponses aux questions
 
 ## 🧭 Étape 1 — Création propre de l’environnement GCP
 
