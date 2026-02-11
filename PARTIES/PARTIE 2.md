@@ -181,5 +181,262 @@ CREATE OR REPLACE TABLE `adventureworks-dw-christian.staging.stg_dim_product` (
 ## 🧭 Étape 8 — Charger DimProduct2.csv dans staging.stg_dim_product
 
 ```sql
+LOAD DATA OVERWRITE `adventureworks-dw-christian.staging.stg_dim_product`
+FROM FILES (
+  format = 'CSV',
+  uris = ['gs://adventureworks-data-christian/landing/DimProduct2.csv'],
+  skip_leading_rows = 1
+);
+```
 
+**vérification**
+```sql
+SELECT COUNT(*) AS row_count
+FROM `adventureworks-dw-christian.staging.stg_dim_product`;
+```
+
+## 🧭 Étape 9 — Ajouter les métadonnées à stg_dim_product
+
+```sql
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_product`
+ADD COLUMN IF NOT EXISTS _ingested_at TIMESTAMP;
+
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_product`
+ADD COLUMN IF NOT EXISTS _source_file STRING;
+
+UPDATE `adventureworks-dw-christian.staging.stg_dim_product`
+SET
+  _ingested_at = CURRENT_TIMESTAMP(),
+  _source_file = 'DimProduct2.csv'
+WHERE _ingested_at IS NULL;
+```
+
+**vérification**
+```sql
+SELECT
+  COUNT(*) AS total_rows,
+  COUNTIF(_ingested_at IS NULL) AS null_ingested_at,
+  COUNTIF(_source_file IS NULL) AS null_source_file,
+  ANY_VALUE(_source_file) AS sample_source_file
+FROM `adventureworks-dw-christian.staging.stg_dim_product`;
+```
+
+## 🧭 Étape 10 — Dimension Revendeur : créer staging.stg_dim_reseller
+
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.staging.stg_dim_reseller` (
+  ResellerKey              INT64,
+  ResellerAlternateKey     STRING,
+  Phone                    STRING,
+  BusinessType             STRING,
+  ResellerName             STRING,
+  NumberEmployees          INT64,
+  OrderFrequency           STRING,
+  OrderMonth               INT64,
+  FirstOrderYear           INT64,
+  LastOrderYear            INT64,
+  ProductLine              STRING,
+  AddressLine1             STRING,
+  AddressLine2             STRING,
+  AnnualSales              FLOAT64,
+  BankName                 STRING,
+  MinPaymentType           INT64,
+  MinPaymentAmount         FLOAT64,
+  AnnualRevenue            FLOAT64,
+  YearOpened               INT64,
+
+  -- Metadata
+  _ingested_at             TIMESTAMP,
+  _source_file             STRING
+);
+```
+
+## 🧭 Étape 11 — Charger DimReseller2.csv dans staging.stg_dim_reseller
+
+```sql
+LOAD DATA OVERWRITE `adventureworks-dw-christian.staging.stg_dim_reseller`
+FROM FILES (
+  format = 'CSV',
+  uris = ['gs://adventureworks-data-christian/landing/DimReseller2.csv'],
+  skip_leading_rows = 1
+);
+```
+
+**vérification**
+```sql
+SELECT COUNT(*) AS row_count
+FROM `adventureworks-dw-christian.staging.stg_dim_reseller`;
+```
+
+## 🧭 Étape 12 — Métadonnées pour stg_dim_reseller (pattern safe)
+
+```sql
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_reseller`
+ADD COLUMN IF NOT EXISTS _ingested_at TIMESTAMP;
+
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_reseller`
+ADD COLUMN IF NOT EXISTS _source_file STRING;
+
+UPDATE `adventureworks-dw-christian.staging.stg_dim_reseller`
+SET
+  _ingested_at = CURRENT_TIMESTAMP(),
+  _source_file = 'DimReseller2.csv'
+WHERE _ingested_at IS NULL;
+```
+
+**vérification**
+```sql
+SELECT
+  COUNT(*) AS total_rows,
+  COUNTIF(_ingested_at IS NULL) AS null_ingested_at,
+  COUNTIF(_source_file IS NULL) AS null_source_file,
+  ANY_VALUE(_source_file) AS sample_source_file
+FROM `adventureworks-dw-christian.staging.stg_dim_reseller`;
+```
+
+## 🧭 Étape 13 — Dimension Employé : créer
+
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.staging.stg_dim_employee` (
+  EmployeeKey                INT64,
+  ParentEmployeeKey          INT64,
+  EmployeeNationalIDAlternateKey STRING,
+  ParentEmployeeNationalIDAlternateKey STRING,
+  SalesTerritoryKey          INT64,
+  FirstName                  STRING,
+  LastName                   STRING,
+  MiddleName                 STRING,
+  NameStyle                  BOOL,
+  Title                      STRING,
+  HireDate                   DATE,
+  BirthDate                  DATE,
+  LoginID                    STRING,
+  EmailAddress               STRING,
+  Phone                      STRING,
+  MaritalStatus              STRING,
+  EmergencyContactName       STRING,
+  EmergencyContactPhone      STRING,
+  SalariedFlag               BOOL,
+  Gender                     STRING,
+  PayFrequency               INT64,
+  BaseRate                   FLOAT64,
+  VacationHours              INT64,
+  SickLeaveHours             INT64,
+  CurrentFlag                BOOL,
+  SalesPersonFlag            BOOL,
+  DepartmentName             STRING,
+  StartDate                  DATE,
+  EndDate                    DATE,
+  Status                     STRING,
+
+  -- Metadata
+  _ingested_at               TIMESTAMP,
+  _source_file               STRING
+);
+```
+
+## 🧭 Étape 14 — Charger DimEmployee2.csv dans staging.stg_dim_employee
+
+```sql
+LOAD DATA OVERWRITE `adventureworks-dw-christian.staging.stg_dim_employee`
+FROM FILES (
+  format = 'CSV',
+  uris = ['gs://adventureworks-data-christian/landing/DimEmployee2.csv'],
+  skip_leading_rows = 1
+);
+```
+
+**vérification**
+```sql
+SELECT COUNT(*) AS row_count
+FROM `adventureworks-dw-christian.staging.stg_dim_employee`;
+```
+
+## 🧭 Étape 15 — Métadonnées pour stg_dim_employee
+
+```sql
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_employee`
+ADD COLUMN IF NOT EXISTS _ingested_at TIMESTAMP;
+
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_employee`
+ADD COLUMN IF NOT EXISTS _source_file STRING;
+
+UPDATE `adventureworks-dw-christian.staging.stg_dim_employee`
+SET
+  _ingested_at = CURRENT_TIMESTAMP(),
+  _source_file = 'DimEmployee2.csv'
+WHERE _ingested_at IS NULL;
+```
+
+**vérification**
+```sql
+SELECT
+  COUNT(*) AS total_rows,
+  COUNTIF(_ingested_at IS NULL) AS null_ingested_at,
+  COUNTIF(_source_file IS NULL) AS null_source_file,
+  ANY_VALUE(_source_file) AS sample_source_file
+FROM `adventureworks-dw-christian.staging.stg_dim_employee`;
+```
+
+## 🧭 Étape 16 — Dimension Géographie : créer staging.stg_dim_geography
+
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.staging.stg_dim_geography` (
+  GeographyKey             INT64,
+  City                     STRING,
+  StateProvinceCode        STRING,
+  StateProvinceName        STRING,
+  CountryRegionCode        STRING,
+  EnglishCountryRegionName STRING,
+  PostalCode               STRING,
+  SalesTerritoryKey        INT64,
+  IpAddressLocator         STRING,
+
+  -- Metadata
+  _ingested_at             TIMESTAMP,
+  _source_file             STRING
+);
+```
+
+## 🧭 Étape 17 — Charger DimGeography2.csv dans staging.stg_dim_geography
+
+```sql
+LOAD DATA OVERWRITE `adventureworks-dw-christian.staging.stg_dim_geography`
+FROM FILES (
+  format = 'CSV',
+  uris = ['gs://adventureworks-data-christian/landing/DimGeography2.csv'],
+  skip_leading_rows = 1
+);
+```
+
+**vérification**
+```sql
+SELECT COUNT(*) AS row_count
+FROM `adventureworks-dw-christian.staging.stg_dim_geography`;
+```
+
+## 🧭 Étape 18 — Métadonnées pour stg_dim_geography
+
+```sql
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_geography`
+ADD COLUMN IF NOT EXISTS _ingested_at TIMESTAMP;
+
+ALTER TABLE `adventureworks-dw-christian.staging.stg_dim_geography`
+ADD COLUMN IF NOT EXISTS _source_file STRING;
+
+UPDATE `adventureworks-dw-christian.staging.stg_dim_geography`
+SET
+  _ingested_at = CURRENT_TIMESTAMP(),
+  _source_file = 'DimGeography2.csv'
+WHERE _ingested_at IS NULL;
+```
+
+**vérification**
+```sql
+SELECT
+  COUNT(*) AS total_rows,
+  COUNTIF(_ingested_at IS NULL) AS null_ingested_at,
+  COUNTIF(_source_file IS NULL) AS null_source_file,
+  ANY_VALUE(_source_file) AS sample_source_file
+FROM `adventureworks-dw-christian.staging.stg_dim_geography`;
 ```
