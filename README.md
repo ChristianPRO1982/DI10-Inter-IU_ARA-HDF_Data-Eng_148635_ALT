@@ -27,3 +27,7 @@
 [#3 - Axes d’analyse](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%201%20-%203-Axes%20d%E2%80%99analyse.md)
 
 [#4 - Indicateurs métier (KPI)](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%201%20-%204-Indicateurs%20m%C3%A9tier%20(KPI).md)
+
+## PARTIE 2
+
+[Construction d'un Data Warehouse et de Data Marts avec BigQuery](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%202.md)
