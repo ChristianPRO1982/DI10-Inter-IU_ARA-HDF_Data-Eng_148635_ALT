@@ -2,6 +2,18 @@
 
 ***RENDU***
 
+## TD
+
+[Cas d’étude 1 — Consultations médicales](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%201%20%E2%80%94%20Consultations%20m%C3%A9dicales.md)
+
+[Cas d’étude 2 — Analyse des salaires](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%202%20%E2%80%94%20Analyse%20des%20salaires.md)
+
+[Cas d’étude 3 — Du relationnel au décisionnel (étoile puis flocon)](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%203%20%E2%80%94%20Du%20relationnel%20au%20d%C3%A9cisionnel%20(%C3%A9toile%20puis%20flocon).md)
+
+## TP
+
+[TP — Informatique Décisionnelle & OLAP avec BigQuery](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TP/TP%20%E2%80%94%20Informatique%20D%C3%A9cisionnelle%20%26%20OLAP%20avec%20BigQuery.md)
+
 ## PARTIE 0
 
 [veille](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%200%20-%20veille.md)
@@ -15,15 +27,3 @@
 [#3 - Axes d’analyse](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%203-Axes%20d%E2%80%99analyse.md)
 
 [#4 - Indicateurs métier (KPI)](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%201%20-%204-Indicateurs%20m%C3%A9tier%20(KPI).md)
-
-## TD
-
-[Cas d’étude 1 — Consultations médicales](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%201%20%E2%80%94%20Consultations%20m%C3%A9dicales.md)
-
-[Cas d’étude 2 — Analyse des salaires](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%202%20%E2%80%94%20Analyse%20des%20salaires.md)
-
-[Cas d’étude 3 — Du relationnel au décisionnel (étoile puis flocon)](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TD/Cas%20d%E2%80%99%C3%A9tude%203%20%E2%80%94%20Du%20relationnel%20au%20d%C3%A9cisionnel%20(%C3%A9toile%20puis%20flocon).md)
-
-## TP
-
-[TP — Informatique Décisionnelle & OLAP avec BigQuery](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/TP/TP%20%E2%80%94%20Informatique%20D%C3%A9cisionnelle%20%26%20OLAP%20avec%20BigQuery.md)

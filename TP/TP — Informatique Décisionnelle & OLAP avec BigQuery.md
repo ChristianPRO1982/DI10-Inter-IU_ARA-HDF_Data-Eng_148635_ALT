@@ -516,3 +516,11 @@ ORDER BY avg_sale_dollars DESC;
 | FLAVORED RUM | $120.73 |
 | WHITE RUM | $120.42 |
 | [...] | [...] |
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/PARTIES/PARTIE%200%20-%20veille.md)
