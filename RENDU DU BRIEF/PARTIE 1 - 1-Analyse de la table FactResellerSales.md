@@ -5,11 +5,11 @@
 En premier lieu j'ai modifié les fichiers `.csv` afin qu'ils soient lus par Pandas et Google `Cloud Storage`.
 
 Pour ne rien perdre, j'ai suffixé les fichiers ainsi :
-* `./data_adventureWorks/**DimEmployee2.csv**`
-* `./data_adventureWorks/**DimGeography2.csv**`
-* `./data_adventureWorks/**DimProduct2.csv**`
-* `./data_adventureWorks/**DimReseller2.csv**`
-* `./data_adventureWorks/**FactResellerSales2.csv**`
+* `./data_adventureWorks/DimEmployee2.csv`
+* `./data_adventureWorks/DimGeography2.csv`
+* `./data_adventureWorks/DimProduct2.csv`
+* `./data_adventureWorks/DimReseller2.csv`
+* `./data_adventureWorks/FactResellerSales2.csv`
 
 Les `CR` `LF` et l'UTF sont adaptés à Linux. De plus, j'ai modifié les fichiers ainsi :
 * dans les commentaires, les `,` sont remplacés par des `;`
