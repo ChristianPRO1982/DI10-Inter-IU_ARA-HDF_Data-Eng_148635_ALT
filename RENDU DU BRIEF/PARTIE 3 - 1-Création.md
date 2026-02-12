@@ -207,12 +207,218 @@ FROM `adventureworks-dw-christian.dw.dim_employee`;
 |-------------------|----------------|
 |                 0 |              0 |
 
+## 🧭 Étape 6 — Créer dw.dim_geography
 
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.dw.dim_geography` AS
+SELECT
+  GeographyKey AS geography_key,
+  City AS city,
+  StateProvinceName AS state_province,
+  CountryRegionCode AS country_code,
+  EnglishCountryRegionName AS country_name,
+  SalesTerritoryKey AS sales_territory_key
+FROM `adventureworks-dw-christian.staging.stg_dim_geography`;
+```
 
+**vérification 1**
 
+Comptage
 
+```sql
+SELECT COUNT(*) AS row_count
+FROM `adventureworks-dw-christian.dw.dim_geography`;
+```
 
+**résultats**
 
+655 > OK
+
+**vérification 2**
+
+Null checks (piliers de la hiérarchie)
+
+```sql
+SELECT
+  COUNTIF(geography_key IS NULL) AS null_geo_key,
+  COUNTIF(country_name IS NULL) AS null_country_name,
+  COUNTIF(sales_territory_key IS NULL) AS null_territory_key
+FROM `adventureworks-dw-christian.dw.dim_geography`;
+```
+
+**résultats**
+
+| null_geo_key | null_country_name | null_territory_key |
+|--------------|-------------------|--------------------|
+|            0 |                 0 |                  0 |
+
+## 🧭 Étape 7 — Créer dw.fact_reseller_sales (partition + cluster)
+
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.dw.fact_reseller_sales` (
+  -- Keys
+  product_key INT64,
+  order_date_key INT64,
+  reseller_key INT64,
+  employee_key INT64,
+  sales_territory_key INT64,
+
+  -- Identifiers
+  order_number STRING,
+  order_line_number INT64,
+
+  -- Dates
+  order_date DATE,
+  ship_date DATE,
+  due_date DATE,
+
+  -- Measures (FLOW)
+  quantity INT64,
+  sales_amount FLOAT64,
+  total_cost FLOAT64,
+  discount_amount FLOAT64,
+  tax_amount FLOAT64,
+  freight FLOAT64,
+
+  -- Measures (VPU)
+  unit_price FLOAT64,
+  discount_pct FLOAT64,
+
+  -- Calculated
+  margin FLOAT64
+)
+PARTITION BY order_date
+CLUSTER BY product_key, reseller_key;
+```
+
+**vérification avant INSERT**
+
+```sql
+SELECT
+  (SELECT COUNT(*) FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`) AS staging_rows,
+  (SELECT COUNT(*) FROM `adventureworks-dw-christian.dw.fact_reseller_sales`) AS dw_rows;
+```
+
+**résultats**
+
+| staging_rows | dw_rows |
+|--------------|---------|
+|        60855 |       0 |
+
+**vérification après INSERT**
+
+```sql
+INSERT INTO `adventureworks-dw-christian.dw.fact_reseller_sales` (
+  product_key,
+  order_date_key,
+  reseller_key,
+  employee_key,
+  sales_territory_key,
+  order_number,
+  order_line_number,
+  order_date,
+  ship_date,
+  due_date,
+  quantity,
+  sales_amount,
+  total_cost,
+  discount_amount,
+  tax_amount,
+  freight,
+  unit_price,
+  discount_pct,
+  margin
+)
+SELECT
+  f.ProductKey AS product_key,
+  f.OrderDateKey AS order_date_key,
+  f.ResellerKey AS reseller_key,
+  f.EmployeeKey AS employee_key,
+  f.SalesTerritoryKey AS sales_territory_key,
+
+  f.SalesOrderNumber AS order_number,
+  f.SalesOrderLineNumber AS order_line_number,
+
+  DATE(f.OrderDate) AS order_date,
+  DATE(f.ShipDate) AS ship_date,
+  DATE(f.DueDate) AS due_date,
+
+  f.OrderQuantity AS quantity,
+  f.SalesAmount AS sales_amount,
+  f.TotalProductCost AS total_cost,
+  f.DiscountAmount AS discount_amount,
+  f.TaxAmt AS tax_amount,
+  f.Freight AS freight,
+
+  f.UnitPrice AS unit_price,
+  f.UnitPriceDiscountPct AS discount_pct,
+
+  (f.SalesAmount - f.TotalProductCost) AS margin
+FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales` AS f
+WHERE EXISTS (
+  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_product` p
+  WHERE p.product_key = f.ProductKey
+)
+AND EXISTS (
+  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_reseller` r
+  WHERE r.reseller_key = f.ResellerKey
+)
+AND EXISTS (
+  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_employee` e
+  WHERE e.employee_key = f.EmployeeKey
+)
+AND EXISTS (
+  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_date` d
+  WHERE d.date_key = f.OrderDateKey
+);
+```
+
+```sql
+SELECT
+  (SELECT COUNT(*) FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`) AS staging_rows,
+  (SELECT COUNT(*) FROM `adventureworks-dw-christian.dw.fact_reseller_sales`) AS dw_rows;
+```
+
+**résultats**
+
+| staging_rows | dw_rows |
+|--------------|---------|
+|        60855 |   60855 |
+
+## 🧭 Étape 8 — Vérifier partitionnement & clustering (métadonnées)
+
+1️⃣ Vérifier le champ de partition (présence de la pseudo-colonne)
+
+```sql
+SELECT
+  column_name,
+  is_partitioning_column
+FROM `adventureworks-dw-christian.dw.INFORMATION_SCHEMA.COLUMNS`
+WHERE table_name = 'fact_reseller_sales'
+  AND is_partitioning_column = 'YES';
+```
+
+**résultats**
+
+| column_name | is_partitioning_column |
+|-------------|------------------------|
+|  order_date |                    YES |
+
+2️⃣ Vérifier le clustering
+
+```sql
+SELECT
+  table_name,
+  option_name,
+  option_value
+FROM `adventureworks-dw-christian.dw.INFORMATION_SCHEMA.TABLE_OPTIONS`
+WHERE table_name = 'fact_reseller_sales'
+  AND option_name = 'clustering_fields';
+```
+
+**résultats**
+
+pas de données
 
 
 
