@@ -88,6 +88,9 @@ WHERE ListPrice > 0;
 ```
 
 **vérification 1**
+
+Comptage
+
 ```sql
 SELECT COUNT(*) AS row_count
 FROM `adventureworks-dw-christian.dw.dim_product`;
@@ -98,6 +101,8 @@ FROM `adventureworks-dw-christian.dw.dim_product`;
 395 lignes
 
 **vérification 2**
+
+Vérif N/A
 
 ```sql
 SELECT
@@ -158,8 +163,49 @@ FROM `adventureworks-dw-christian.dw.dim_reseller`;
 |-------------------------|-------------------|
 |                       0 |                 0 |
 
+## 🧭 Étape 5 — Créer dw.dim_employee
 
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.dw.dim_employee` AS
+SELECT
+  EmployeeKey AS employee_key,
+  CONCAT(FirstName, ' ', LastName) AS full_name,
+  INITCAP(Title) AS job_title,
+  HireDate AS hire_date,
+  SalesTerritoryKey AS sales_territory_key,
+  DepartmentName AS department
+FROM `adventureworks-dw-christian.staging.stg_dim_employee`;
+```
 
+**vérification 1**
+
+Comptage
+
+```sql
+SELECT COUNT(*) AS row_count
+FROM `adventureworks-dw-christian.dw.dim_employee`;
+```
+
+**résultats**
+
+296 > OK
+
+**vérification 2**
+
+Check standardisation
+
+```sql
+SELECT
+  COUNTIF(full_name IS NULL OR full_name = ' ') AS invalid_full_name,
+  COUNTIF(job_title IS NULL OR job_title = '') AS null_job_title
+FROM `adventureworks-dw-christian.dw.dim_employee`;
+```
+
+**résultats**
+
+| invalid_full_name | null_job_title |
+|-------------------|----------------|
+|                 0 |              0 |
 
 
 
