@@ -46,7 +46,7 @@ FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`;
 
 1	0	0	0	0	0	0	0	0
 
-## 🧭 Étape 21 — Vérification des doublons (grain technique)
+## 🧭 Étape 21 — Vérification des doublons (grain technique)
 
 ```sql
 SELECT
@@ -76,7 +76,7 @@ WHERE p.ProductKey IS NULL;
 
 Pas de résultat > OK
 
-## 🧭 Étape 23 — Intégrité référentielle : ResellerKey → stg_dim_reseller
+## 🧭 Étape 23 — Intégrité référentielle : ResellerKey → stg_dim_reseller
 
 ```sql
 SELECT DISTINCT f.ResellerKey
@@ -90,7 +90,7 @@ WHERE r.ResellerKey IS NULL;
 
 Pas de résultat > OK
 
-## 🧭 Étape 24 — Intégrité référentielle : EmployeeKey → stg_dim_employee
+## 🧭 Étape 24 — Intégrité référentielle : EmployeeKey → stg_dim_employee
 
 ```sql
 SELECT DISTINCT f.EmployeeKey
@@ -104,7 +104,7 @@ WHERE e.EmployeeKey IS NULL;
 
 Pas de résultat > OK
 
-## 🧭 Étape 25 — Intégrité référentielle : SalesTerritoryKey (FACT) → SalesTerritoryKey (DimGeography)
+## 🧭 Étape 25 — Intégrité référentielle : SalesTerritoryKey (FACT) → SalesTerritoryKey (DimGeography)
 
 ```sql
 SELECT DISTINCT f.SalesTerritoryKey
@@ -136,3 +136,4 @@ FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`;
 | min_sales | max_sales   | avg_sales     | min_order_date       | max_order_date       | nb_orders |
 |-----------|-------------|---------------|----------------------|----------------------|-----------|
 | 1,374     | 27893,619   | 1322,004716   | 29/12/2010 00:00:00  | 29/11/2013 00:00:00  | 3796      |
+
