@@ -11,7 +11,7 @@ Pour ne rien perdre, j'ai suffixé les fichiers ainsi :
 * DimReseller2.csv
 * FactResellerSales2.csv
 
-Les `CR``LF` et l'UTF sont adaptés à Linux. De plus, j'ai modifié les fichiers ainsi :
+Les `CR` `LF` et l'UTF sont adaptés à Linux. De plus, j'ai modifié les fichiers ainsi :
 * dans les commentaires, les `,` sont remplacés par des `;`
 * les séparateurs `|` sont remplacés par les officiels *.csv* `,`
 * ajout des titres de colonnes
