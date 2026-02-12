@@ -45,3 +45,93 @@ FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`;
 **résultats :**
 
 1	0	0	0	0	0	0	0	0
+
+## 🧭 Étape 21 — Vérification des doublons (grain technique)
+
+```sql
+SELECT
+  SalesOrderNumber,
+  SalesOrderLineNumber,
+  COUNT(*) AS nb
+FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`
+GROUP BY 1, 2
+HAVING COUNT(*) > 1;
+```
+
+**résultats :**
+
+Pas de résultat > OK
+
+## 🧭 Étape 22 — Intégrité référentielle (FACT → dimensions)
+
+```sql
+SELECT DISTINCT f.ProductKey
+FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales` AS f
+LEFT JOIN `adventureworks-dw-christian.staging.stg_dim_product` AS p
+  ON f.ProductKey = p.ProductKey
+WHERE p.ProductKey IS NULL;
+```
+
+**résultats :**
+
+Pas de résultat > OK
+
+## 🧭 Étape 23 — Intégrité référentielle : ResellerKey → stg_dim_reseller
+
+```sql
+SELECT DISTINCT f.ResellerKey
+FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales` AS f
+LEFT JOIN `adventureworks-dw-christian.staging.stg_dim_reseller` AS r
+  ON f.ResellerKey = r.ResellerKey
+WHERE r.ResellerKey IS NULL;
+```
+
+**résultats :**
+
+Pas de résultat > OK
+
+## 🧭 Étape 24 — Intégrité référentielle : EmployeeKey → stg_dim_employee
+
+```sql
+SELECT DISTINCT f.EmployeeKey
+FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales` AS f
+LEFT JOIN `adventureworks-dw-christian.staging.stg_dim_employee` AS e
+  ON f.EmployeeKey = e.EmployeeKey
+WHERE e.EmployeeKey IS NULL;
+```
+
+**résultats :**
+
+Pas de résultat > OK
+
+## 🧭 Étape 25 — Intégrité référentielle : SalesTerritoryKey (FACT) → SalesTerritoryKey (DimGeography)
+
+```sql
+SELECT DISTINCT f.SalesTerritoryKey
+FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales` AS f
+LEFT JOIN `adventureworks-dw-christian.staging.stg_dim_geography` AS g
+  ON f.SalesTerritoryKey = g.SalesTerritoryKey
+WHERE g.SalesTerritoryKey IS NULL;
+```
+
+**résultats :**
+
+Pas de résultat > OK
+
+## 🧭 Étape 26 — Statistiques descriptives (FACT)
+
+```sql
+SELECT
+  MIN(SalesAmount) AS min_sales,
+  MAX(SalesAmount) AS max_sales,
+  AVG(SalesAmount) AS avg_sales,
+  MIN(OrderDate) AS min_order_date,
+  MAX(OrderDate) AS max_order_date,
+  COUNT(DISTINCT SalesOrderNumber) AS nb_orders
+FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`;
+```
+
+**résultats :**
+
+min_sales	max_sales	avg_sales	min_order_date	max_order_date	nb_orders
+1,374	27893,619	1322,004716	29/12/2010 00:00:00	29/11/2013 00:00:00	3796
