@@ -572,18 +572,201 @@ FROM `adventureworks-dw-christian.marts.mart_products`;
 |-------------|--------------|
 | 334         | 80450596,98  |
 
+# ✅ Analyse rapide
+
+✔ 334 produits actifs (cohérent avec ton filtre `ListPrice > 0`)
+✔ CA total strictement égal au DW
+✔ Agrégation correcte
+✔ Pas de perte de données
+
+Ton mart est sain.
+
+# 🧭 Étape 7 — Analyse Produit avancée
+
+## 7.1 — Top 10 produits par CA
+
+```sql
+SELECT
+  product_name,
+  total_revenue,
+  revenue_rank,
+  revenue_contribution_pct
+FROM `adventureworks-dw-christian.marts.mart_products`
+WHERE revenue_rank <= 10
+ORDER BY revenue_rank;
+```
+
+**résultats**
+
+| product_name               | total_revenue | revenue_rank | revenue_contribution_pct |
+|----------------------------|---------------|--------------|--------------------------|
+| Mountain-200 Black; 38     | 1634647,937   | 1            | 2,03                     |
+| Mountain-200 Black; 38     | 1471078,722   | 2            | 1,83                     |
+| Road-350-W Yellow; 48      | 1380253,877   | 3            | 1,72                     |
+| Touring-1000 Blue; 60      | 1370784,224   | 4            | 1,7                      |
+| Mountain-200 Black; 42     | 1360828,019   | 5            | 1,69                     |
+| Mountain-200 Black; 42     | 1285524,649   | 6            | 1,6                      |
+| Road-350-W Yellow; 40      | 1238754,643   | 7            | 1,54                     |
+| Touring-1000 Yellow; 60    | 1184363,301   | 8            | 1,47                     |
+| Mountain-200 Silver; 38    | 1181945,817   | 9            | 1,47                     |
+| Mountain-200 Silver; 42    | 1175932,516   | 10           | 1,46                     |
 
 
+## 7.2 — Top 10 produits par marge
+
+```sql
+SELECT
+  product_name,
+  total_margin,
+  margin_pct
+FROM `adventureworks-dw-christian.marts.mart_products`
+ORDER BY total_margin DESC
+LIMIT 10;
+```
+
+**résultats**
+
+| product_name               | total_margin  | margin_pct     |
+|----------------------------|---------------|----------------|
+| Mountain-200 Black; 38     | 146318,3418   | 9,946329835    |
+| Mountain-200 Black; 38     | 136026,3213   | 8,321444526    |
+| Mountain-200 Black; 42     | 133378,9194   | 9,80130608     |
+| Mountain-200 Silver; 42    | 116205,1229   | 9,88195507     |
+| Mountain-200 Silver; 38    | 115895,5921   | 9,88642972     |
+| Mountain-200 Silver; 46    | 114264,7275   | 9,874034728    |
+| Mountain-200 Black; 42     | 108662,2271   | 8,452753292    |
+| Mountain-200 Silver; 38    | 102372,3839   | 8,661343218    |
+| Mountain-200 Black; 46     | 93225,7743    | 9,914721961    |
+| Mountain-200 Black; 46     | 88240,992     | 8,860182875    |
 
 
+## 7.3 — Analyse Pareto (80/20)
 
+On veut identifier les produits représentant **80 % du CA total**.
 
+Ajoute ceci :
 
+```sql
+WITH ranked_products AS (
+  SELECT
+    product_name,
+    total_revenue,
+    SUM(total_revenue)
+      OVER (ORDER BY total_revenue DESC) AS cumulative_revenue,
+    SUM(total_revenue)
+      OVER () AS total_revenue_all
+  FROM `adventureworks-dw-christian.marts.mart_products`
+)
 
+SELECT
+  product_name,
+  total_revenue,
+  cumulative_revenue,
+  ROUND(cumulative_revenue * 100 / total_revenue_all, 2) AS cumulative_pct
+FROM ranked_products
+WHERE cumulative_revenue * 100 / total_revenue_all <= 80
+ORDER BY total_revenue DESC;
+```
 
+**résultats**
 
-
-
-
-
-
+| product_name                     | total_revenue | cumulative_revenue | cumulative_pct |
+|-----------------------------------|---------------|--------------------|----------------|
+| Mountain-200 Black; 38           | 1634647,937   | 1634647,937        | 2,03           |
+| Mountain-200 Black; 38           | 1471078,722   | 3105726,659        | 3,86           |
+| Road-350-W Yellow; 48            | 1380253,877   | 4485980,536        | 5,58           |
+| Touring-1000 Blue; 60            | 1370784,224   | 5856764,761        | 7,28           |
+| Mountain-200 Black; 42           | 1360828,019   | 7217592,78         | 8,97           |
+| Mountain-200 Black; 42           | 1285524,649   | 8503117,429        | 10,57          |
+| Road-350-W Yellow; 40            | 1238754,643   | 9741872,072        | 12,11          |
+| Touring-1000 Yellow; 60          | 1184363,301   | 10926235,37        | 13,58          |
+| Mountain-200 Silver; 38          | 1181945,817   | 12108181,19        | 15,05          |
+| Mountain-200 Silver; 42          | 1175932,516   | 13284113,71        | 16,51          |
+| Mountain-100 Black; 38           | 1174622,745   | 14458736,45        | 17,97          |
+| Mountain-200 Silver; 38          | 1172269,418   | 15631005,87        | 19,43          |
+| Touring-1000 Blue; 46            | 1164973,183   | 16795979,05        | 20,88          |
+| Mountain-100 Black; 44           | 1163352,978   | 17959332,03        | 22,32          |
+| Mountain-200 Silver; 46          | 1157224,282   | 19116556,31        | 23,76          |
+| Mountain-100 Black; 42           | 1102848,183   | 20219404,5         | 25,13          |
+| Road-250 Red; 44                 | 1096280,079   | 21315684,57        | 26,5           |
+| Mountain-100 Silver; 38          | 1094669,281   | 22410353,86        | 27,86          |
+| Mountain-100 Silver; 44          | 1050610,851   | 23460964,71        | 29,16          |
+| Mountain-100 Silver; 42          | 1043695,271   | 24504659,98        | 30,46          |
+| Mountain-100 Black; 48           | 1041901,601   | 25546561,58        | 31,75          |
+| Touring-1000 Yellow; 46          | 1016312,829   | 26562874,41        | 33,02          |
+| Mountain-200 Silver; 42          | 1005111,772   | 27567986,18        | 34,27          |
+| Mountain-200 Black; 46           | 995927,4345   | 28563913,61        | 35,5           |
+| Mountain-200 Silver; 46          | 975932,5614   | 29539846,17        | 36,72          |
+| Road-250 Black; 44               | 975155,8224   | 30515002           | 37,93          |
+| Road-250 Red; 48                 | 947659,1615   | 31462661,16        | 39,11          |
+| Mountain-200 Black; 46           | 940276,2343   | 32402937,39        | 40,28          |
+| Road-250 Black; 44               | 913324,23     | 33316261,62        | 41,41          |
+| Mountain-100 Silver; 48          | 897257,3612   | 34213518,98        | 42,53          |
+| Road-250 Black; 48               | 842197,4394   | 35055716,42        | 43,57          |
+| Road-250 Black; 48               | 814252,2515   | 35869968,67        | 44,59          |
+| Road-150 Red; 56                 | 792228,978    | 36662197,65        | 45,57          |
+| Road-250 Red; 52                 | 741801,06     | 37403998,71        | 46,49          |
+| Road-350-W Yellow; 42            | 720333,7143   | 38124332,43        | 47,39          |
+| Touring-1000 Blue; 50            | 713790,558    | 38838122,98        | 48,28          |
+| Road-650 Black; 52               | 679332,3031   | 39517455,29        | 49,12          |
+| Road-650 Red; 60                 | 675199,3686   | 40192654,66        | 49,96          |
+| Touring-2000 Blue; 54            | 665395,2123   | 40858049,87        | 50,79          |
+| Road-250 Black; 52               | 662322,375    | 41520372,24        | 51,61          |
+| Touring-1000 Yellow; 50          | 621193,2792   | 42141565,52        | 52,38          |
+| Road-450 Red; 52                 | 621103,74     | 42762669,26        | 53,15          |
+| Road-250 Black; 52               | 615724,2      | 43378393,46        | 53,92          |
+| Road-650 Red; 44                 | 587454,8469   | 43965848,31        | 54,65          |
+| Road-650 Red; 62                 | 575619,5616   | 44541467,87        | 55,36          |
+| Road-650 Red; 48                 | 575500,782    | 45116968,65        | 56,08          |
+| Road-650 Black; 58               | 573356,0941   | 45690324,75        | 56,79          |
+| Road-150 Red; 62                 | 566797,968    | 46257122,72        | 57,5           |
+| Touring-2000 Blue; 60            | 537320,8659   | 46794443,58        | 58,17          |
+| Road-450 Red; 58                 | 507978,2959   | 47302421,88        | 58,8           |
+| Mountain-300 Black; 40           | 501648,8751   | 47804070,75        | 59,42          |
+| Road-550-W Yellow; 48            | 485572,4091   | 48289643,16        | 60,02          |
+| Mountain-300 Black; 44           | 484051,518    | 48773694,68        | 60,63          |
+| Mountain-300 Black; 48           | 479071,9001   | 49252766,58        | 61,22          |
+| Road-550-W Yellow; 38            | 470145,5027   | 49722912,08        | 61,81          |
+| Road-550-W Yellow; 48            | 464562,3586   | 50187474,44        | 62,38          |
+| Road-550-W Yellow; 38            | 463876,0582   | 50651350,5         | 62,96          |
+| Road-250 Black; 58               | 448965,5625   | 51549281,62        | 64,08          |
+| Road-250 Red; 58                 | 448965,5625   | 51549281,62        | 64,08          |
+| Mountain-300 Black; 38           | 442477,087    | 51991758,71        | 64,63          |
+| Road-250 Black; 58               | 435404,97     | 52862568,65        | 65,71          |
+| Road-250 Red; 58                 | 435404,97     | 52862568,65        | 65,71          |
+| HL Mountain Frame - Silver; 38   | 412969,1998   | 53275537,85        | 66,22          |
+| Road-550-W Yellow; 40            | 399174,5625   | 53674712,41        | 66,72          |
+| HL Mountain Frame - Black; 42    | 395972,64     | 54070685,05        | 67,21          |
+| HL Mountain Frame - Silver; 38   | 387021,804    | 54457706,86        | 67,69          |
+| Road-750 Black; 48               | 382157,943    | 54839864,8         | 68,17          |
+| Road-550-W Yellow; 40            | 382110,3962   | 55221975,2         | 68,64          |
+| HL Mountain Frame - Black; 42    | 379114,9325   | 55601090,13        | 69,11          |
+| Touring-1000 Blue; 54            | 361901,826    | 55962991,96        | 69,56          |
+| Road-650 Red; 52                 | 342479,826    | 56305471,78        | 69,99          |
+| Road-150 Red; 48                 | 334926,072    | 57310250           | 71,24          |
+| Road-150 Red; 44                 | 334926,072    | 57310250           | 71,24          |
+| Road-150 Red; 52                 | 334926,072    | 57310250           | 71,24          |
+| Road-650 Black; 60               | 330932,6027   | 57641182,6         | 71,65          |
+| Road-650 Black; 44               | 329968,2722   | 57971150,87        | 72,06          |
+| Road-350-W Yellow; 44            | 326590,08     | 58297740,95        | 72,46          |
+| HL Touring Frame - Blue; 54      | 324333,1033   | 58622074,06        | 72,87          |
+| HL Touring Frame - Yellow; 54    | 323268,2559   | 58945342,31        | 73,27          |
+| Touring-2000 Blue; 46            | 321027,0281   | 59266369,34        | 73,67          |
+| Touring-3000 Yellow; 62          | 314430,2127   | 59580799,55        | 74,06          |
+| Touring-3000 Yellow; 44          | 314323,2401   | 59895122,79        | 74,45          |
+| Touring-3000 Blue; 50            | 312948,7051   | 60208071,5         | 74,84          |
+| Road-750 Black; 52               | 307230,7665   | 60515302,26        | 75,22          |
+| Road-450 Red; 60                 | 306177,9      | 60821480,16        | 75,6           |
+| Road-550-W Yellow; 42            | 304333,0875   | 61125813,25        | 75,98          |
+| Road-450 Red; 44                 | 302678,724    | 61428491,98        | 76,36          |
+| Road-650 Red; 44                 | 295718,5245   | 61724210,5         | 76,72          |
+| Road-650 Red; 60                 | 295056,0598   | 62019266,56        | 77,09          |
+| Road-650 Black; 52               | 293841,0305   | 62313107,59        | 77,46          |
+| Road-550-W Yellow; 42            | 293120,184    | 62606227,77        | 77,82          |
+| Touring-1000 Yellow; 54          | 290475,0888   | 62896702,86        | 78,18          |
+| ML Road Frame-W - Yellow; 44     | 255122,1328   | 63151825           | 78,5           |
+| Touring-3000 Blue; 54            | 249245,8693   | 63401070,86        | 78,81          |
+| Touring-3000 Yellow; 50          | 247948,6129   | 63649019,48        | 79,12          |
+| Road-650 Red; 62                 | 241188,8675   | 63890208,35        | 79,42          |
+| Road-650 Red; 48                 | 235316,4429   | 64125524,79        | 79,71          |
+| Road-650 Black; 58               | 234896,984    | 64360421,77        | 80             |
