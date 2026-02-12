@@ -195,3 +195,11 @@ Dans un pipeline réel orchestré (Airflow, Cloud Composer, etc.),
 les colonnes `started_at` et `finished_at` seraient alimentées
 par l’orchestrateur afin de mesurer précisément la durée d’exécution.
 Dans ce contexte pédagogique, elles sont simulées via `CURRENT_TIMESTAMP()`.
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%204%20-%201.Cr%C3%A9ation.md)
