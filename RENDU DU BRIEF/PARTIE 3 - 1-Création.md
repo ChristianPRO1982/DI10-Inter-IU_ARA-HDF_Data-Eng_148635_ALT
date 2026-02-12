@@ -420,8 +420,30 @@ WHERE table_name = 'fact_reseller_sales'
 
 pas de données
 
+> il faut vérifier pourquoi
+
+## 🧭 Étape 9 — Vérifier le clustering autrement (sans ambiguïté)
 
 
+```sql
+SELECT
+  option_name,
+  option_value
+FROM `adventureworks-dw-christian.dw.INFORMATION_SCHEMA.TABLE_OPTIONS`
+WHERE table_name = 'fact_reseller_sales'
+ORDER BY option_name;
+```
+
+**résultats**
+
+|              option_name | option_value |
+|--------------------------|--------------|
+| require_partition_filter |        false |
+
+## 🧭 Étape 10 — Activer le clustering sur la FACT (sans recréer la table)
+
+```sql
+```
 
 
 

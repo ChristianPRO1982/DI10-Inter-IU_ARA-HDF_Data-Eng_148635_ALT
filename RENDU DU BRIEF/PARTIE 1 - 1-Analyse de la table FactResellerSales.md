@@ -1,5 +1,21 @@
 # PARTIE 1 - #1 - Analyse de la table FactResellerSales
 
+## fichiers sources
+
+En premier lieu j'ai modifié les fichiers `.csv` afin qu'ils soient lus par Pandas et Google `Cloud Storage`.
+
+Pour ne rien perdre, j'ai suffixé les fichiers ainsi :
+* DimEmployee2.csv
+* DimGeography2.csv
+* DimProduct2.csv
+* DimReseller2.csv
+* FactResellerSales2.csv
+
+Les `CR``LF` et l'UTF sont adaptés à Linux. De plus, j'ai modifié les fichiers ainsi :
+* dans les commentaires, les `,` sont remplacés par des `;`
+* les séparateurs `|` sont remplacés par les officiels *.csv* `,`
+* ajout des titres de colonnes
+
 ## EDA
 
 Voici les talbeaux générés :
