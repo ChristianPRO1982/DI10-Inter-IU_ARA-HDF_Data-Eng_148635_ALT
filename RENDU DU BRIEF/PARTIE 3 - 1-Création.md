@@ -256,35 +256,24 @@ FROM `adventureworks-dw-christian.dw.dim_geography`;
 
 ```sql
 CREATE OR REPLACE TABLE `adventureworks-dw-christian.dw.fact_reseller_sales` (
-  -- Keys
   product_key INT64,
   order_date_key INT64,
   reseller_key INT64,
   employee_key INT64,
   sales_territory_key INT64,
-
-  -- Identifiers
   order_number STRING,
   order_line_number INT64,
-
-  -- Dates
   order_date DATE,
   ship_date DATE,
   due_date DATE,
-
-  -- Measures (FLOW)
   quantity INT64,
   sales_amount FLOAT64,
   total_cost FLOAT64,
   discount_amount FLOAT64,
   tax_amount FLOAT64,
   freight FLOAT64,
-
-  -- Measures (VPU)
   unit_price FLOAT64,
   discount_pct FLOAT64,
-
-  -- Calculated
   margin FLOAT64
 )
 PARTITION BY order_date
@@ -308,69 +297,32 @@ SELECT
 **vérification après INSERT**
 
 ```sql
-INSERT INTO `adventureworks-dw-christian.dw.fact_reseller_sales` (
-  product_key,
-  order_date_key,
-  reseller_key,
-  employee_key,
-  sales_territory_key,
-  order_number,
-  order_line_number,
-  order_date,
-  ship_date,
-  due_date,
-  quantity,
-  sales_amount,
-  total_cost,
-  discount_amount,
-  tax_amount,
-  freight,
-  unit_price,
-  discount_pct,
-  margin
-)
+INSERT INTO `adventureworks-dw-christian.dw.fact_reseller_sales`
 SELECT
   f.ProductKey AS product_key,
   f.OrderDateKey AS order_date_key,
   f.ResellerKey AS reseller_key,
   f.EmployeeKey AS employee_key,
   f.SalesTerritoryKey AS sales_territory_key,
-
   f.SalesOrderNumber AS order_number,
   f.SalesOrderLineNumber AS order_line_number,
-
   DATE(f.OrderDate) AS order_date,
   DATE(f.ShipDate) AS ship_date,
   DATE(f.DueDate) AS due_date,
-
   f.OrderQuantity AS quantity,
   f.SalesAmount AS sales_amount,
   f.TotalProductCost AS total_cost,
   f.DiscountAmount AS discount_amount,
   f.TaxAmt AS tax_amount,
   f.Freight AS freight,
-
   f.UnitPrice AS unit_price,
   f.UnitPriceDiscountPct AS discount_pct,
-
   (f.SalesAmount - f.TotalProductCost) AS margin
 FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales` AS f
-WHERE EXISTS (
-  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_product` p
-  WHERE p.product_key = f.ProductKey
-)
-AND EXISTS (
-  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_reseller` r
-  WHERE r.reseller_key = f.ResellerKey
-)
-AND EXISTS (
-  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_employee` e
-  WHERE e.employee_key = f.EmployeeKey
-)
-AND EXISTS (
-  SELECT 1 FROM `adventureworks-dw-christian.dw.dim_date` d
-  WHERE d.date_key = f.OrderDateKey
-);
+WHERE EXISTS (SELECT 1 FROM `adventureworks-dw-christian.dw.dim_product` p WHERE p.product_key = f.ProductKey)
+  AND EXISTS (SELECT 1 FROM `adventureworks-dw-christian.dw.dim_reseller` r WHERE r.reseller_key = f.ResellerKey)
+  AND EXISTS (SELECT 1 FROM `adventureworks-dw-christian.dw.dim_employee` e WHERE e.employee_key = f.EmployeeKey)
+  AND EXISTS (SELECT 1 FROM `adventureworks-dw-christian.dw.dim_date` d WHERE d.date_key = f.OrderDateKey);
 ```
 
 ```sql
@@ -385,65 +337,6 @@ SELECT
 |--------------|---------|
 |        60855 |   60855 |
 
-## 🧭 Étape 8 — Vérifier partitionnement & clustering (métadonnées)
-
-1️⃣ Vérifier le champ de partition (présence de la pseudo-colonne)
-
-```sql
-SELECT
-  column_name,
-  is_partitioning_column
-FROM `adventureworks-dw-christian.dw.INFORMATION_SCHEMA.COLUMNS`
-WHERE table_name = 'fact_reseller_sales'
-  AND is_partitioning_column = 'YES';
-```
-
-**résultats**
-
-| column_name | is_partitioning_column |
-|-------------|------------------------|
-|  order_date |                    YES |
-
-2️⃣ Vérifier le clustering
-
-```sql
-SELECT
-  table_name,
-  option_name,
-  option_value
-FROM `adventureworks-dw-christian.dw.INFORMATION_SCHEMA.TABLE_OPTIONS`
-WHERE table_name = 'fact_reseller_sales'
-  AND option_name = 'clustering_fields';
-```
-
-**résultats**
-
-pas de données
-
-> il faut vérifier pourquoi
-
-## 🧭 Étape 9 — Vérifier le clustering autrement (sans ambiguïté)
-
-
-```sql
-SELECT
-  option_name,
-  option_value
-FROM `adventureworks-dw-christian.dw.INFORMATION_SCHEMA.TABLE_OPTIONS`
-WHERE table_name = 'fact_reseller_sales'
-ORDER BY option_name;
-```
-
-**résultats**
-
-|              option_name | option_value |
-|--------------------------|--------------|
-| require_partition_filter |        false |
-
-## 🧭 Étape 10 — Activer le clustering sur la FACT (sans recréer la table)
-
-```sql
-```
 
 
 
