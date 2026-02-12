@@ -19,11 +19,11 @@ Les `CR` `LF` et l'UTF sont adaptés à Linux. De plus, j'ai modifié les fichie
 ## EDA
 
 Voici les talbeaux générés :
-* ./brief/EDA/EDA_DimEmployee.html
-* ./brief/EDA/EDA_DimGeography.html
-* ./brief/EDA/EDA_DimProduct.html
-* ./brief/EDA/EDA_DimReseller.html
-* ./brief/EDA/EDA_FactResellerSales.html
+* `./brief/EDA/EDA_DimEmployee.html`
+* `./brief/EDA/EDA_DimGeography.html`
+* `./brief/EDA/EDA_DimProduct.html`
+* `./brief/EDA/EDA_DimReseller.html`
+* `./brief/EDA/EDA_FactResellerSales.html`
 
 ## 1.1 Comprendre l’événement métier
 
