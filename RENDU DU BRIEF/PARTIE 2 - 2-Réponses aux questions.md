@@ -137,3 +137,10 @@ FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`;
 |-----------|-------------|---------------|----------------------|----------------------|-----------|
 | 1,374     | 27893,619   | 1322,004716   | 29/12/2010 00:00:00  | 29/11/2013 00:00:00  | 3796      |
 
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%203%20-%201-Cr%C3%A9ation.md)
