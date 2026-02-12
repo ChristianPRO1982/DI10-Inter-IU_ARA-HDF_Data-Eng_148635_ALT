@@ -337,10 +337,19 @@ SELECT
 |--------------|---------|
 |        60855 |   60855 |
 
+## 🧭 Étape 8 — Contrôle de cohérence : totaux staging vs DW
 
+```sql
+SELECT
+  (SELECT SUM(SalesAmount) FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`) AS staging_total,
+  (SELECT SUM(sales_amount) FROM `adventureworks-dw-christian.dw.fact_reseller_sales`) AS dw_total;
+```
 
+**résultats**
 
-
+|     staging_total |           dw_total |
+|-------------------|--------------------|
+| 80450596.98229973 | 80450596.982299969 |
 
 ---
 ---
