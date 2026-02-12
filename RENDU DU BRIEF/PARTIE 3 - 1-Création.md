@@ -351,6 +351,23 @@ SELECT
 |-------------------|--------------------|
 | 80450596.98229973 | 80450596.982299969 |
 
+> La différence est juste un effet d’arrondi flottant (FLOAT64). Le delta est minuscule (de l’ordre de 1e-10 / 1e-12), donc fonctionnellement c’est identique.
+
+Une preuve “zéro ambiguïté” dans ton rendu, tu peux ajouter ce check :
+
+```sql
+SELECT
+  ABS(
+    (SELECT SUM(SalesAmount) FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`)
+    -
+    (SELECT SUM(sales_amount) FROM `adventureworks-dw-christian.dw.fact_reseller_sales`)
+  ) AS abs_diff;
+```
+
+**résultats**
+
+`abs_diff = 2.2351741790771484e-07`
+
 ---
 ---
 ---
