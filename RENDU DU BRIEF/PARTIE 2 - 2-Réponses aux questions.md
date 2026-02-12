@@ -133,5 +133,6 @@ FROM `adventureworks-dw-christian.staging.stg_fact_reseller_sales`;
 
 **résultats :**
 
-min_sales	max_sales	avg_sales	min_order_date	max_order_date	nb_orders
-1,374	27893,619	1322,004716	29/12/2010 00:00:00	29/11/2013 00:00:00	3796
+| min_sales | max_sales   | avg_sales     | min_order_date       | max_order_date       | nb_orders |
+|-----------|------------|---------------|----------------------|----------------------|-----------|
+| 1,374     | 27893,619  | 1322,004716   | 29/12/2010 00:00:00  | 29/11/2013 00:00:00  | 3796      |
