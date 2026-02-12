@@ -319,3 +319,271 @@ ORDER BY annee, mois;
 
 **commentaire**
 
+## 📝 Analyse — Évolution mensuelle du chiffre d’affaires
+
+La requête utilisant `LAG()` permet de comparer le chiffre d’affaires de chaque mois avec celui du mois précédent et de calculer un **taux de croissance mensuel (%)**.
+
+---
+
+### 📈 Lecture globale
+
+* 2010 correspond à une **année partielle** (uniquement décembre).
+* 2011 montre une **forte volatilité**, avec des variations importantes d’un mois à l’autre.
+* 2012 présente une dynamique plus équilibrée mais avec plusieurs phases de repli.
+* 2013 confirme une activité soutenue mais toujours cyclique.
+
+### 🚀 Plus forte croissance mensuelle
+
+La plus forte croissance observée est :
+
+* **Août 2011 : +370,62 %**
+
+Cette hausse exceptionnelle intervient après un mois très faible (juillet 2011), ce qui amplifie mécaniquement le pourcentage d’augmentation.
+
+On observe également des croissances significatives :
+
+* Janvier 2011 : +214,39 %
+* Mai 2011 : +100,29 %
+* Juillet 2012 : +81,01 %
+* Juillet 2013 : +62,36 %
+
+👉 Cela révèle une forte **saisonnalité** et une activité irrégulière.
+
+### 📉 Plus forte décroissance mensuelle
+
+La plus forte baisse est :
+
+* **Juillet 2011 : −82,29 %**
+
+Autres baisses notables :
+
+* Mars 2013 : −43,62 %
+* Juin 2013 : −52,65 %
+* Juin 2012 : −39,71 %
+
+👉 Les mois d’été semblent particulièrement volatils, ce qui peut traduire un effet saisonnier.
+
+### 🔎 Observation technique importante
+
+On remarque l’absence de certains mois en 2011 (ex : février, avril, juin).
+Cela signifie qu’aucune vente n’a été enregistrée ces mois-là dans le dataset, ce qui impacte directement les calculs de croissance.
+
+Dans un contexte réel, il serait préférable :
+
+* soit de générer une série temporelle complète via une dimension Date,
+* soit d’utiliser une table calendrier pour éviter les "trous" dans l’analyse.
+
+### 🎯 Conclusion
+
+L’utilisation des fonctions analytiques (`LAG()` + `OVER()`) permet :
+
+* d’identifier les phases d’expansion et de contraction ;
+* de mettre en évidence la saisonnalité ;
+* de fournir des indicateurs exploitables pour la direction.
+
+Cette analyse dépasse une simple agrégation et illustre pleinement la puissance des **window functions en SQL analytique**.
+
+## 🧭 Étape 5 — Chiffre d’affaires cumulé par année
+
+Objectif :
+Calculer le **CA cumulé mois après mois**, en repartant à zéro chaque année.
+
+* suivre la performance annuelle en cours,
+* comparer l’année N à N-1,
+* faire du pilotage budgétaire.
+
+## 5.1 — Requête CA cumulé par année
+
+Ajoute ceci dans ton rendu :
+
+```sql
+SELECT
+  annee,
+  mois,
+  nom_mois,
+
+  SUM(total_revenue) AS ca_mensuel,
+
+  -- Cumul annuel progressif
+  SUM(SUM(total_revenue))
+    OVER (
+      PARTITION BY annee
+      ORDER BY mois
+      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS ca_cumule
+
+FROM `adventureworks-dw-christian.marts.mart_sales_daily`
+GROUP BY annee, mois, nom_mois
+ORDER BY annee, mois;
+```
+
+## 🔎 Explication technique
+
+* `PARTITION BY annee`
+  👉 le cumul redémarre chaque année.
+
+* `ORDER BY mois`
+  👉 progression chronologique.
+
+* `UNBOUNDED PRECEDING → CURRENT ROW`
+  👉 cumul depuis le début de l’année jusqu’au mois courant.
+
+**résultats**
+
+| annee | mois | nom_mois  | ca_mensuel    | ca_cumule       |
+|-------|------|-----------|---------------|-----------------|
+| 2010  | 12   | December  | 489328,5787   | 489328,5787     |
+| 2011  | 1    | January   | 1538408,312   | 1538408,312     |
+| 2011  | 3    | March     | 2010618,074   | 3549026,386     |
+| 2011  | 5    | May       | 4027080,34    | 7576106,727     |
+| 2011  | 7    | July      | 713116,6943   | 8289223,421     |
+| 2011  | 8    | August    | 3356069,344   | 11645292,76     |
+| 2011  | 9    | September | 882899,9424   | 12528192,71     |
+| 2011  | 10   | October   | 2269116,712   | 14797309,42     |
+| 2011  | 11   | November  | 1001803,77    | 15799113,19     |
+| 2011  | 12   | December  | 2393689,526   | 18192802,71     |
+| 2012  | 1    | January   | 3601190,714   | 3601190,714     |
+| 2012  | 2    | February  | 2885359,199   | 6486549,913     |
+| 2012  | 3    | March     | 1802154,213   | 8288704,126     |
+| 2012  | 4    | April     | 3053816,326   | 11342520,45     |
+| 2012  | 5    | May       | 2185213,215   | 13527733,67     |
+| 2012  | 6    | June      | 1317541,833   | 14845275,5      |
+| 2012  | 7    | July      | 2384846,591   | 17230122,09     |
+| 2012  | 8    | August    | 1563955,081   | 18794077,17     |
+| 2012  | 9    | September | 1865278,434   | 20659355,61     |
+| 2012  | 10   | October   | 2880752,681   | 23540108,29     |
+| 2012  | 11   | November  | 1987872,707   | 25527980,99     |
+| 2012  | 12   | December  | 2665650,539   | 28193631,53     |
+| 2013  | 1    | January   | 4212971,51    | 4212971,51      |
+| 2013  | 2    | February  | 4047574,038   | 8260545,548     |
+| 2013  | 3    | March     | 2282115,877   | 10542661,42     |
+| 2013  | 4    | April     | 3483161,403   | 14025822,83     |
+| 2013  | 5    | May       | 3510948,732   | 17536771,56     |
+| 2013  | 6    | June      | 1662547,324   | 19199318,88     |
+| 2013  | 7    | July      | 2699300,793   | 21898619,68     |
+| 2013  | 8    | August    | 2738653,618   | 24637273,29     |
+| 2013  | 9    | September | 2206725,224   | 26843998,52     |
+| 2013  | 10   | October   | 3314600,785   | 30158599,3      |
+| 2013  | 11   | November  | 3416234,854   | 33574834,16     |
+
+**commentaire**
+
+On observe que :
+
+* **Décembre 2011 → 18 192 802,71**
+* **Décembre 2012 → 28 193 631,53**
+* **Novembre 2013 → 33 574 834,16**
+
+Ces montants correspondent exactement aux chiffres d’affaires annuels calculés précédemment.
+
+👉 Le cumul est donc parfaitement cohérent.
+
+### 📈 Lecture analytique
+
+Le cumul permet de visualiser :
+
+* la vitesse de génération du chiffre d’affaires,
+* les périodes d’accélération,
+* les périodes de ralentissement.
+
+Par exemple :
+
+* En **2013**, dès mars, le cumul dépasse 10,5M.
+* En juin 2013, le cumul atteint déjà ~19,2M.
+* La croissance s’accélère fortement entre septembre et novembre.
+
+Cela montre que 2013 est une année particulièrement dynamique comparée à 2011 et 2012.
+
+### 🎯 Intérêt métier
+
+Le cumul annuel est un indicateur clé pour :
+
+* le pilotage budgétaire,
+* la comparaison YTD (Year-To-Date),
+* l’analyse de performance progressive,
+* le suivi d’objectifs annuels.
+
+Il est largement utilisé en BI pour les tableaux de bord directionnels.
+
+### 💡 Remarque technique
+
+L’utilisation combinée de :
+
+* `PARTITION BY annee`
+* `ORDER BY mois`
+* `UNBOUNDED PRECEDING`
+
+permet un cumul précis, contrôlé et lisible.
+
+Cette requête illustre parfaitement la puissance des **window functions en SQL analytique**, au-delà d’un simple `GROUP BY`.
+
+## 🧭 Étape 6 — Création du Data Mart Produits
+
+## 6.1 — Créer la table `marts.mart_products`
+
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.marts.mart_products` AS
+SELECT
+  p.product_key,
+  p.product_name,
+  p.color,
+
+  -- KPI principaux
+  SUM(f.sales_amount) AS total_revenue,
+  SUM(f.quantity) AS total_quantity,
+  SUM(f.margin) AS total_margin,
+
+  -- KPI calculés
+  SAFE_DIVIDE(SUM(f.margin), SUM(f.sales_amount)) * 100 AS margin_pct,
+  COUNT(DISTINCT f.order_number) AS nb_orders,
+  AVG(f.unit_price) AS avg_unit_price,
+
+  -- Classement par CA
+  RANK() OVER (ORDER BY SUM(f.sales_amount) DESC) AS revenue_rank,
+
+  -- Contribution au CA total
+  ROUND(
+    SUM(f.sales_amount) * 100.0
+    / SUM(SUM(f.sales_amount)) OVER (),
+    2
+  ) AS revenue_contribution_pct
+
+FROM `adventureworks-dw-christian.dw.fact_reseller_sales` f
+JOIN `adventureworks-dw-christian.dw.dim_product` p
+  ON f.product_key = p.product_key
+GROUP BY
+  p.product_key,
+  p.product_name,
+  p.color;
+```
+
+## 6.2 — Vérification simple
+
+```sql
+SELECT
+  COUNT(*) AS nb_products,
+  SUM(total_revenue) AS total_ca
+FROM `adventureworks-dw-christian.marts.mart_products`;
+```
+
+**résultats**
+
+| nb_products | total_ca     |
+|-------------|--------------|
+| 334         | 80450596,98  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
