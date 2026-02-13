@@ -944,7 +944,7 @@ On termine fort.
 ✔ Aucune perte d’information
 ✔ Agrégation correcte
 
-Ton `mart_customers` est sain.
+`mart_customers` est sain.
 
 # 🧭 Étape 9 — Analyse stratégique Revendeurs
 
@@ -1075,3 +1075,65 @@ ORDER BY lifetime_value DESC;
 | Extended Tours | 5615,5794 | 4 |
 | City Manufacturing | 5575,2477 | 4 |
 | Bicycle Warehouse Inc. | 5426,7938 | 4 |
+
+**📝 Analyse — Customer 360 & Segmentation Revendeurs**
+
+### 📊 Répartition des statuts
+
+| Statut  | Nb  | % approx | Part du CA |
+| ------- | --- | -------- | ---------- |
+| Active  | 466 | ~73 %    | ~83,8 %    |
+| Churned | 142 | ~22 %    | ~15,4 %    |
+| At Risk | 27  | ~4 %     | ~0,8 %     |
+
+### 🔎 Lecture stratégique
+
+* La majorité des revendeurs sont **actifs (73 %)**
+* Ils génèrent **près de 84 % du chiffre d’affaires total**
+* Les clients churned représentent 22 % du portefeuille mais seulement 15 % du CA
+
+👉 Le risque principal n’est pas massif, mais le portefeuille churned reste significatif.
+
+Le segment **At Risk** est faible en volume et en CA → opportunité de réactivation ciblée.
+
+### 🏆 Top revendeurs
+
+Le premier revendeur :
+
+**Brakes and Gears (US)**
+LTV ≈ 877K
+
+Les 10 premiers revendeurs :
+
+* Majoritairement US / Canada
+* Tous sont actuellement **Active**
+* Certains ont une marge négative malgré un fort CA
+
+👉 Cela peut indiquer :
+
+* pression concurrentielle
+* structure de coûts élevée
+* remises importantes
+
+### 📈 Segmentation par quartiles (NTILE)
+
+* Quartile 1 = top 25 % des revendeurs
+* Quartile 4 = bottom 25 %
+
+Avec 635 revendeurs :
+
+👉 Chaque quartile contient environ **159 revendeurs**
+
+### Lecture :
+
+* Le quartile 1 concentre la majorité du chiffre d’affaires.
+* Le quartile 4 regroupe des revendeurs à très faible contribution (< 7K LTV).
+* L’écart entre le top et le bas de portefeuille est très important.
+
+👉 Cela confirme une distribution **asymétrique**, typique d’un portefeuille B2B.
+
+### 🎯 Conclusion stratégique
+
+* Le chiffre d’affaires repose principalement sur les revendeurs actifs.
+* Une minorité de revendeurs génère l’essentiel du CA.
+* La gestion du churn et la montée en gamme du quartile 2 pourraient améliorer la performance globale.
