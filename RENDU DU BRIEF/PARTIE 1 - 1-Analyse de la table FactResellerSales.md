@@ -1,30 +1,5 @@
 # PARTIE 1 - #1 - Analyse de la table FactResellerSales
 
-## fichiers sources
-
-En premier lieu j'ai modifié les fichiers `.csv` afin qu'ils soient lus par Pandas et Google `Cloud Storage`.
-
-Pour ne rien perdre, j'ai suffixé les fichiers ainsi :
-* `./data_adventureWorks/DimEmployee2.csv`
-* `./data_adventureWorks/DimGeography2.csv`
-* `./data_adventureWorks/DimProduct2.csv`
-* `./data_adventureWorks/DimReseller2.csv`
-* `./data_adventureWorks/FactResellerSales2.csv`
-
-Les `CR` `LF` et l'UTF sont adaptés à Linux. De plus, j'ai modifié les fichiers ainsi :
-* dans les commentaires, les `,` sont remplacés par des `;`
-* les séparateurs `|` sont remplacés par les officiels *.csv* `,`
-* ajout des titres de colonnes
-
-## EDA
-
-Voici les talbeaux générés :
-* `./brief/EDA/EDA_DimEmployee.html`
-* `./brief/EDA/EDA_DimGeography.html`
-* `./brief/EDA/EDA_DimProduct.html`
-* `./brief/EDA/EDA_DimReseller.html`
-* `./brief/EDA/EDA_FactResellerSales.html`
-
 ## 1.1 Comprendre l’événement métier
 
 > **Une ligne de la table `FactResellerSales` correspond à une ligne de commande de vente, c’est-à-dire la vente d’un produit donné à un revendeur donné, pour une commande donnée, à une date donnée.**
