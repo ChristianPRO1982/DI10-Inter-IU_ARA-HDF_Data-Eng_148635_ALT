@@ -314,8 +314,8 @@ Permet de :
 | KPI                           | Formule SQL (logique)                               | Table source     | Résultat obtenu                | Interprétation métier           |
 | ----------------------------- | --------------------------------------------------- | ---------------- | ------------------------------ | ------------------------------- |
 | **CA total**                  | `SUM(total_revenue)`                                | mart_sales_daily | **80 450 596,98**              | Chiffre d’affaires global       |
-| **Marge totale**              | `SUM(total_margin)`                                 | mart_sales_daily | **-491 870,01**                | Profit brut global (négatif)    |
-| **Taux de marge global**      | `SUM(margin) / SUM(revenue) * 100`                  | mart_sales_daily | **≈ -0,61 %**                  | Rentabilité globale faible      |
+| **Marge totale**              | `SUM(total_margin)`                                 | mart_sales_daily | **470 482**                | Profit brut global (négatif)    |
+| **Taux de marge global**      | `SUM(margin) / SUM(revenue) * 100`                  | mart_sales_daily | **≈ 0,58 %**                  | Rentabilité globale faible      |
 | **Panier moyen global**       | `SUM(total_revenue) / COUNT(DISTINCT order_number)` | mart_sales_daily | ≈ **1 322 €**                  | Valeur moyenne par commande     |
 | **Nombre total de commandes** | `COUNT(DISTINCT order_number)`                      | mart_sales_daily | **60 855 lignes fact**         | Activité commerciale globale    |
 | **Quantité totale vendue**    | `SUM(total_quantity)`                               | mart_sales_daily | (calculé dans mart)            | Volume physique vendu           |
