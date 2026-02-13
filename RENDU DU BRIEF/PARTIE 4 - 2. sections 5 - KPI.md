@@ -139,3 +139,11 @@ FROM `adventureworks-dw-christian.marts.mart_customers`;
 **Résultats**
 
 > **Clients Actifs =** 73.39%
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%205%20-%201.%20sections%201%20%C3%A0%204.md)
