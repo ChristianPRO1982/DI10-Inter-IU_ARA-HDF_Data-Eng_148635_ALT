@@ -529,3 +529,11 @@ Deux procédures ont été mises en place :
 
 Une procédure de pipeline complet `meta.sp_run_full_pipeline()` orchestre les deux étapes.
 Les logs stockés dans `meta.pipeline_logs` assurent la traçabilité, et les volumes traités sont cohérents (60855 lignes DW + 1396 lignes marts = 62251).
+
+---
+---
+---
+---
+---
+
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%205%20-%202.%20README.md)
