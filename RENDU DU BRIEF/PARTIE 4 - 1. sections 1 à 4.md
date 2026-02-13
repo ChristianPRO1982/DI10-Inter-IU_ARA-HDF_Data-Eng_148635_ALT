@@ -1,4 +1,4 @@
-# PARTIE 4 - 1.Création
+# PARTIE 4 - 1. sections 1 à 4
 
 ## 🧭 Étape 1 — Création du Data Mart Ventes quotidien
 
@@ -813,3 +813,113 @@ Cette étape illustre parfaitement l’utilisation combinée de :
 
 dans une logique BI décisionnelle.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Parfait 👌
+On attaque la partie la plus stratégique : **Customer 360**.
+
+Ici on passe du reporting produit à la **vision client décisionnelle** : LTV, churn, fréquence, statut.
+
+---
+
+# 🧭 Étape 8 — Création du Data Mart Revendeurs (`mart_customers`)
+
+Objectif :
+Construire une vue **Customer 360** avec :
+
+* Lifetime Value
+* Récence
+* Fréquence
+* Statut (Active / At Risk / Churned)
+
+---
+
+## 8.1 — Création de la table `marts.mart_customers`
+
+Ajoute ceci dans ton rendu :
+
+```sql
+CREATE OR REPLACE TABLE `adventureworks-dw-christian.marts.mart_customers` AS
+
+WITH max_date AS (
+  SELECT MAX(order_date) AS dataset_end_date
+  FROM `adventureworks-dw-christian.dw.fact_reseller_sales`
+)
+
+SELECT
+  r.reseller_key,
+  r.reseller_name,
+  r.business_type,
+  g.country_name,
+
+  -- Temporal metrics
+  MIN(f.order_date) AS first_order_date,
+  MAX(f.order_date) AS last_order_date,
+
+  -- Volume
+  COUNT(DISTINCT f.order_number) AS nb_orders,
+  SUM(f.quantity) AS total_items,
+  SUM(f.sales_amount) AS lifetime_value,
+  SUM(f.margin) AS total_margin,
+
+  -- Average order value
+  SAFE_DIVIDE(
+    SUM(f.sales_amount),
+    COUNT(DISTINCT f.order_number)
+  ) AS avg_order_value,
+
+  -- Order frequency (days between orders)
+  SAFE_DIVIDE(
+    DATE_DIFF(MAX(f.order_date), MIN(f.order_date), DAY),
+    GREATEST(COUNT(DISTINCT f.order_number) - 1, 1)
+  ) AS order_frequency_days,
+
+  -- Recency
+  DATE_DIFF(md.dataset_end_date, MAX(f.order_date), DAY) AS days_since_last_order,
+
+  -- Customer status
+  CASE
+    WHEN DATE_DIFF(md.dataset_end_date, MAX(f.order_date), DAY) < 180 THEN 'Active'
+    WHEN DATE_DIFF(md.dataset_end_date, MAX(f.order_date), DAY) < 365 THEN 'At Risk'
+    ELSE 'Churned'
+  END AS customer_status
+
+FROM `adventureworks-dw-christian.dw.fact_reseller_sales` f
+JOIN `adventureworks-dw-christian.dw.dim_reseller` r
+  ON f.reseller_key = r.reseller_key
+JOIN `adventureworks-dw-christian.dw.dim_geography` g
+  ON r.geography_key = g.geography_key
+CROSS JOIN max_date md
+
+GROUP BY
+  r.reseller_key,
+  r.reseller_name,
+  r.business_type,
+  g.country_name,
+  md.dataset_end_date;
+```
+
+---
+
+## 8.2 — Vérification simple
+
+```sql
+SELECT
+  COUNT(*) AS nb_resellers,
+  SUM(lifetime_value) AS total_ltv
+FROM `adventureworks-dw-christian.marts.mart_customers`;
+```
+
+🎯 Le `total_ltv` doit être égal au CA global du DW.
