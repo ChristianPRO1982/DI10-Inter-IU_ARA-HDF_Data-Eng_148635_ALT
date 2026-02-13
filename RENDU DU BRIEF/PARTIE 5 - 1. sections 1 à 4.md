@@ -424,3 +424,78 @@ LIMIT 5;
 | 5      | dw_transform     | staging.stg_dim_geography | dw.dim_geography | 12/02/2026 14:55:09  | 12/02/2026 14:55:09  | 655           | SUCCESS |
 
 > **validé :** `sp_refresh_marts` passe en SUCCESS et ton logging est propre.
+
+# 🧭 Étape 4 — Procédure “pipeline complet” `meta.sp_run_full_pipeline()`
+
+## 4.1 — Créer la procédure `meta.sp_run_full_pipeline()`
+
+```sql
+CREATE OR REPLACE PROCEDURE `adventureworks-dw-christian.meta.sp_run_full_pipeline`()
+BEGIN
+  DECLARE start_ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP();
+  DECLARE rows_fact INT64 DEFAULT 0;
+  DECLARE rows_marts INT64 DEFAULT 0;
+
+  BEGIN
+    -- Run DW
+    CALL `adventureworks-dw-christian.meta.sp_refresh_dw`();
+
+    -- Run Marts
+    CALL `adventureworks-dw-christian.meta.sp_refresh_marts`();
+
+    -- Metrics (simple but useful)
+    SET rows_fact = (SELECT COUNT(*) FROM `adventureworks-dw-christian.dw.fact_reseller_sales`);
+    SET rows_marts =
+      (SELECT COUNT(*) FROM `adventureworks-dw-christian.marts.mart_sales_daily`)
+      + (SELECT COUNT(*) FROM `adventureworks-dw-christian.marts.mart_products`)
+      + (SELECT COUNT(*) FROM `adventureworks-dw-christian.marts.mart_customers`);
+
+    -- Global log
+    INSERT INTO `adventureworks-dw-christian.meta.pipeline_logs`
+      (step_name, source_table, target_table, started_at, finished_at, rows_processed, status)
+    VALUES
+      ('sp_run_full_pipeline', 'staging.*', 'dw.* + marts.*', start_ts, CURRENT_TIMESTAMP(),
+       rows_fact + rows_marts, 'SUCCESS');
+
+  EXCEPTION WHEN ERROR THEN
+    INSERT INTO `adventureworks-dw-christian.meta.pipeline_logs`
+      (step_name, source_table, target_table, started_at, finished_at, rows_processed, status)
+    VALUES
+      ('sp_run_full_pipeline', 'staging.*', 'dw.* + marts.*', start_ts, CURRENT_TIMESTAMP(),
+       0, 'ERROR');
+
+    RAISE;
+  END;
+END;
+```
+
+## 4.2 — Test
+
+```sql
+CALL `adventureworks-dw-christian.meta.sp_run_full_pipeline`();
+```
+
+## 4.3 — Vérifier les logs
+
+```sql
+SELECT *
+FROM `adventureworks-dw-christian.meta.pipeline_logs`
+ORDER BY finished_at DESC
+LIMIT 10;
+```
+
+**résultats**
+
+| log_id | step_name            | source_table                         | target_table               | started_at           | finished_at          | rows_processed | status  |
+|--------|----------------------|--------------------------------------|----------------------------|----------------------|----------------------|----------------|---------|
+|        | sp_run_full_pipeline | staging.*                            | dw.* + marts.*             | 13/02/2026 12:09:02  | 13/02/2026 12:09:38  | 62251          | SUCCESS |
+|        | sp_refresh_marts     | dw.*                                 | marts.*                    | 13/02/2026 12:09:21  | 13/02/2026 12:09:35  | 1396           | SUCCESS |
+|        | sp_refresh_dw        |                                      | dw.*                       | 13/02/2026 12:09:02  | 13/02/2026 12:09:19  | 60855          | SUCCESS |
+|        | sp_refresh_marts     | dw.*                                 | marts.*                    | 13/02/2026 11:20:04  | 13/02/2026 11:20:19  | 1396           | SUCCESS |
+|        | sp_refresh_marts     | dw.*                                 | marts.*                    | 13/02/2026 11:18:07  | 13/02/2026 11:18:13  | 0              | ERROR   |
+|        | sp_refresh_marts     |                                      | marts.*                    | 13/02/2026 11:12:48  | 13/02/2026 11:12:54  | 0              | ERROR   |
+|        | sp_refresh_dw        |                                      | dw.*                       | 13/02/2026 11:07:09  | 13/02/2026 11:07:27  | 60855          | SUCCESS |
+| 4      | dw_transform         | staging.stg_dim_employee             | dw.dim_employee            | 12/02/2026 14:55:09  | 12/02/2026 14:55:09  | 296            | SUCCESS |
+| 2      | dw_transform         | staging.stg_dim_product              | dw.dim_product             | 12/02/2026 14:55:09  | 12/02/2026 14:55:09  | 395            | SUCCESS |
+| 6      | dw_transform         | staging.stg_fact_reseller_sales      | dw.fact_reseller_sales     | 12/02/2026 14:55:09  | 12/02/2026 14:55:09  | 60855          | SUCCESS |
+
