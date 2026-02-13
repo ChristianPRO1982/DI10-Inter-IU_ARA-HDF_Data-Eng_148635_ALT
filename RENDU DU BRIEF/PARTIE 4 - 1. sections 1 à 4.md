@@ -922,4 +922,156 @@ SELECT
 FROM `adventureworks-dw-christian.marts.mart_customers`;
 ```
 
-🎯 Le `total_ltv` doit être égal au CA global du DW.
+**résultats**
+
+| nb_resellers | total_ltv     |
+|--------------|--------------:|
+| 635          | 80450596,98   |
+
+Parfait 👌
+On termine fort.
+
+---
+
+# ✅ Vérification Customer 360
+
+| nb_resellers |   total_ltv |
+| ------------ | ----------: |
+| 635          | 80450596,98 |
+
+✔ 635 revendeurs
+✔ LTV total = CA global
+✔ Aucune perte d’information
+✔ Agrégation correcte
+
+Ton `mart_customers` est sain.
+
+# 🧭 Étape 9 — Analyse stratégique Revendeurs
+
+Exploitation du mart pour une direction commerciale.
+
+## 9.1 — Répartition des statuts
+
+```sql
+SELECT
+  customer_status,
+  COUNT(*) AS nb_resellers,
+  SUM(lifetime_value) AS total_ltv,
+  ROUND(AVG(lifetime_value), 2) AS avg_ltv
+FROM `adventureworks-dw-christian.marts.mart_customers`
+GROUP BY customer_status
+ORDER BY total_ltv DESC;
+```
+
+**résultats**
+
+| customer_status | nb_resellers | total_ltv     | avg_ltv    |
+|-----------------|-------------:|--------------:|-----------:|
+| Active          | 466          | 67389743,62   | 144613,18  |
+| Churned         | 142          | 12383653,83   | 87208,83   |
+| At Risk         | 27           | 677199,5325   | 25081,46   |
+
+## 9.2 — Top 10 revendeurs par Lifetime Value
+
+```sql
+SELECT
+  reseller_name,
+  country_name,
+  lifetime_value,
+  total_margin,
+  customer_status
+FROM `adventureworks-dw-christian.marts.mart_customers`
+ORDER BY lifetime_value DESC
+LIMIT 10;
+```
+
+**résultats**
+
+| reseller_name                         | country_name   | lifetime_value | total_margin   | customer_status |
+|---------------------------------------|---------------|---------------:|---------------:|-----------------|
+| Brakes and Gears                     | United States | 877107,1923    | 62737,6359     | Active          |
+| Excellent Riding Supplies            | United States | 853849,1795    | -19428,9804    | Active          |
+| Vigorous Exercise Company            | Canada        | 841908,7708    | 2130,2508      | Active          |
+| Totes & Baskets Company              | United States | 816755,5763    | -18639,5225    | Active          |
+| Retail Mall                          | Canada        | 799277,8953    | -22993,418     | Active          |
+| Corner Bicycle Supply                | Canada        | 787773,0436    | -13782,5107    | Active          |
+| Outdoor Equipment Store              | United States | 746317,5293    | -27918,4705    | Active          |
+| Thorough Parts and Repair Services   | United States | 740985,8338    | -24512,8724    | Active          |
+| Health Spa; Limited                  | Canada        | 730798,7139    | -26332,8171    | Active          |
+| Fitness Toy Store                    | United States | 727272,6494    | -26986,3683    | Active          |
+
+## 9.3 — Segmentation par quartiles (NTILE)
+
+On segmente les revendeurs en 4 groupes selon leur LTV.
+
+```sql
+SELECT
+  reseller_name,
+  lifetime_value,
+  NTILE(4) OVER (ORDER BY lifetime_value DESC) AS ltv_quartile
+FROM `adventureworks-dw-christian.marts.mart_customers`
+ORDER BY lifetime_value DESC;
+```
+
+**résultats**
+
+*Résultats partiels car beaucoup de lignes. Il y a que les 5 premières et 5 dernières lignes pour les 3 premiers quartiles*
+
+| reseller_name | lifetime_value | ltv_quartile |
+| ------------- | -------------- | ------------ |
+| Brakes and Gears | 877107,1923 | 1 |
+| Excellent Riding Supplies | 853849,1795 | 1 |
+| Vigorous Exercise Company | 841908,7708 | 1 |
+| Totes & Baskets Company | 816755,5763 | 1 |
+| Retail Mall | 799277,8953 | 1 |
+| [...] | [...] | [...] |
+| Bicycle Outfitters | 182730,2472 | 1 |
+| Extreme Riding Supplies | 182025,0622 | 1 |
+| Immense Manufacturing Company | 181062,7128 | 1 |
+| Elite Bikes | 179831,3507 | 1 |
+| Stock Parts and Supplies | 178066,6502 | 1 |
+| Journey Sporting Goods | 175502,1574 | 2 |
+| Convenient Sales and Service | 173228,2944 | 2 |
+| Finer Parts Shop | 172227,7313 | 2 |
+| Petroleum Products Distributors | 169212,2208 | 2 |
+| Unified Sports Company | 165815,3344 | 2 |
+| [...] | [...] | [...] |
+| Sharp Bikes | 48761,856 | 2 |
+| Wonderful Bikes Inc. | 47318,0679 | 2 |
+| Machines & Cycles Store | 46616,6681 | 2 |
+| Scratch-Resistant Finishes Company | 45769,5797 | 2 |
+| Famous Bike Shop | 45502,9712 | 2 |
+| Sports Products Store | 45287,6826 | 3 |
+| Number One Bike Co. | 44990,0055 | 3 |
+| Sports Commodities | 44945,4676 | 3 |
+| This Area Sporting Goods | 44568,8113 | 3 |
+| Genuine Bike Shop | 43911,1524 | 3 |
+| [...] | [...] | [...] |
+| More Bikes! | 7719,6876 | 3 |
+| Nearby Sporting Goods | 7695,7047 | 3 |
+| Racing Bike Outlet | 7643,9962 | 3 |
+| All Seasons Sports Supply | 7436,268 | 3 |
+| Twin Cycles | 7337,598 | 3 |
+| Acclaimed Bicycle Company | 7300,8288 | 4 |
+| Vigorous Sports Store | 7183,5787 | 4 |
+| Leisure Clearing House | 7047,5964 | 4 |
+| Commendable Bikes | 6962,3778 | 4 |
+| Countryside Company | 6947,535 | 4 |
+| Ideal Components | 6678,108 | 4 |
+| Bicycle Accessories and Kits | 6587,3763 | 4 |
+| Fleet Bikes | 6417,1108 | 4 |
+| Local Sales and Rental | 6407,892 | 4 |
+| Fast Services | 6369 | 4 |
+| Cycle Merchants | 6287,7839 | 4 |
+| Sports Store | 6278,4211 | 4 |
+| Economy Bikes Company | 6221,0526 | 4 |
+| Mountain Emporium | 6214,259 | 4 |
+| Mechanical Sports Center | 6016,3075 | 4 |
+| Finish and Sealant Products | 5925,7862 | 4 |
+| Futuristic Bikes | 5776,9527 | 4 |
+| Retread Tire Company | 5751,6151 | 4 |
+| New Bikes Company | 5670,2261 | 4 |
+| Top Bike Market | 5641,2108 | 4 |
+| Extended Tours | 5615,5794 | 4 |
+| City Manufacturing | 5575,2477 | 4 |
+| Bicycle Warehouse Inc. | 5426,7938 | 4 |
