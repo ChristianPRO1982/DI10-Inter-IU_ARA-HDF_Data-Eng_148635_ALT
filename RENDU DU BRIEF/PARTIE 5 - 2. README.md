@@ -311,29 +311,50 @@ Permet de :
 
 ### Tableau récapitulatif des KPI
 
-| KPI                        | Formule SQL (logique)                               | Table source     | Interprétation métier                    |
-| -------------------------- | --------------------------------------------------- | ---------------- | ---------------------------------------- |
-| **CA total**               | `SUM(total_revenue)`                                | mart_sales_daily | Chiffre d’affaires global sur la période |
-| **Marge totale**           | `SUM(total_margin)`                                 | mart_sales_daily | Profit brut généré                       |
-| **Taux de marge global**   | `SUM(total_margin) / SUM(total_revenue) * 100`      | mart_sales_daily | Rentabilité globale                      |
-| **CA Année N**             | `SUM(total_revenue) WHERE annee = N`                | mart_sales_daily | Performance annuelle                     |
-| **Croissance annuelle**    | `(CA N - CA N-1) / CA N-1 * 100`                    | mart_sales_daily | Dynamique de croissance                  |
-| **Top pays par CA**        | `SUM(total_revenue) GROUP BY country_name`          | mart_sales_daily | Marché le plus contributeur              |
-| **Panier moyen**           | `SUM(total_revenue) / COUNT(DISTINCT order_number)` | mart_sales_daily | Valeur moyenne par commande              |
-| **Nombre de commandes**    | `COUNT(DISTINCT order_number)`                      | mart_sales_daily | Volume d’activité                        |
-| **Quantité totale vendue** | `SUM(total_quantity)`                               | mart_sales_daily | Volume physique vendu                    |
-| **Top produit par CA**     | `ORDER BY total_revenue DESC LIMIT 1`               | mart_products    | Produit le plus générateur de CA         |
-| **Taux de marge produit**  | `SUM(margin) / SUM(total_revenue) * 100`            | mart_products    | Rentabilité par produit                  |
-| **Contribution au CA (%)** | `total_revenue / SUM(total_revenue) OVER () * 100`  | mart_products    | Part de CA d’un produit                  |
-| **Revenue Rank**           | `RANK() OVER (ORDER BY total_revenue DESC)`         | mart_products    | Classement des produits                  |
-| **LTV (Lifetime Value)**   | `SUM(total_revenue) par reseller`                   | mart_customers   | Valeur vie client                        |
-| **Marge client totale**    | `SUM(total_margin)`                                 | mart_customers   | Profit généré par client                 |
-| **Fréquence de commande**  | `DATE_DIFF(max_date, min_date) / (nb_orders - 1)`   | mart_customers   | Intervalle moyen entre commandes         |
-| **Days since last order**  | `DATE_DIFF(max_dataset_date, last_order_date)`      | mart_customers   | Récence client                           |
-| **Statut client**          | CASE basé sur récence                               | mart_customers   | Segmentation Active / At Risk / Churned  |
-| **% Clients actifs**       | `COUNTIF(status='Active') / COUNT(*) * 100`         | mart_customers   | Santé du portefeuille                    |
+| KPI                           | Formule SQL (logique)                               | Table source     | Résultat obtenu                | Interprétation métier           |
+| ----------------------------- | --------------------------------------------------- | ---------------- | ------------------------------ | ------------------------------- |
+| **CA total**                  | `SUM(total_revenue)`                                | mart_sales_daily | **80 450 596,98**              | Chiffre d’affaires global       |
+| **Marge totale**              | `SUM(total_margin)`                                 | mart_sales_daily | **-491 870,01**                | Profit brut global (négatif)    |
+| **Taux de marge global**      | `SUM(margin) / SUM(revenue) * 100`                  | mart_sales_daily | **≈ -0,61 %**                  | Rentabilité globale faible      |
+| **Panier moyen global**       | `SUM(total_revenue) / COUNT(DISTINCT order_number)` | mart_sales_daily | ≈ **1 322 €**                  | Valeur moyenne par commande     |
+| **Nombre total de commandes** | `COUNT(DISTINCT order_number)`                      | mart_sales_daily | **60 855 lignes fact**         | Activité commerciale globale    |
+| **Quantité totale vendue**    | `SUM(total_quantity)`                               | mart_sales_daily | (calculé dans mart)            | Volume physique vendu           |
+| **Top pays par CA**           | `SUM(total_revenue) GROUP BY country_name`          | mart_sales_daily | **United States : 19 200 388** | Marché principal                |
+| **Top produit (CA)**          | `ORDER BY total_revenue DESC`                       | mart_products    | Mountain-200 Black; 38         | Produit leader                  |
+| **Contribution Top produit**  | `revenue_contribution_pct`                          | mart_products    | **2,03 %**                     | Produit individuel peu dominant |
+| **Produits pour 80 % du CA**  | Pareto cumulatif                                    | mart_products    | ~80 % atteint vers 80e produit | Distribution concentrée         |
+| **Nombre total produits**     | `COUNT(DISTINCT product_key)`                       | mart_products    | **334 produits**               | Large catalogue                 |
+| **Nombre total revendeurs**   | `COUNT(DISTINCT reseller_key)`                      | mart_customers   | **635 revendeurs**             | Base client B2B                 |
+| **LTV max**                   | `MAX(lifetime_value)`                               | mart_customers   | **877 107**                    | Meilleur client                 |
+| **LTV total portefeuille**    | `SUM(lifetime_value)`                               | mart_customers   | **80 450 596,98**              | Cohérent avec CA global         |
+| **Clients actifs**            | `COUNTIF(status='Active')`                          | mart_customers   | **466 (73 %)**                 | Portefeuille sain               |
+| **Clients churned**           | `COUNTIF(status='Churned')`                         | mart_customers   | **142 (22 %)**                 | Attrition significative         |
+| **Clients at risk**           | `COUNTIF(status='At Risk')`                         | mart_customers   | **27 (4 %)**                   | Clients à surveiller            |
 
----
+### 📌 Lecture stratégique rapide
+
+#### 💰 Rentabilité
+
+* CA important (~80M)
+* Marge globale légèrement négative
+  → Problème de pricing ou structure de coûts
+
+#### 🌍 Géographie
+
+* USA = principal moteur de croissance
+* Autres pays plus fragmentés
+
+#### 🛒 Produits
+
+* Aucun produit ne dépasse 3 % du CA
+* Modèle très diversifié
+* Pareto valide : ~20 % des produits génèrent ~80 % du CA
+
+#### 👥 Clients
+
+* 73 % actifs → portefeuille plutôt sain
+* 22 % churned → potentiel d’amélioration CRM
+* Forte concentration LTV sur top clients
 
 ### 🎯 Synthèse stratégique des KPI
 
