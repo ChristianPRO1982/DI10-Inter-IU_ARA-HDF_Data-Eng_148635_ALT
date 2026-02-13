@@ -770,3 +770,46 @@ ORDER BY total_revenue DESC;
 | Road-650 Red; 62                 | 241188,8675   | 63890208,35        | 79,42          |
 | Road-650 Red; 48                 | 235316,4429   | 64125524,79        | 79,71          |
 | Road-650 Black; 58               | 234896,984    | 64360421,77        | 80             |
+
+### 🔝 Top produits par chiffre d’affaires
+
+Les 10 premiers produits représentent chacun entre **1,46 % et 2,03 %** du chiffre d’affaires total.
+Le produit le plus performant est :
+
+**Mountain-200 Black; 38**
+avec environ **2,03 % du CA global**.
+
+On observe une forte dominance de la gamme **Mountain-200**, ce qui indique une concentration du chiffre d’affaires sur une famille produit spécifique.
+
+### 💰 Top produits par marge
+
+Les produits générant le plus de marge appartiennent également à la gamme **Mountain-200**.
+
+Le taux de marge moyen des top produits se situe autour de **9 % à 10 %**, ce qui montre une rentabilité homogène sur cette gamme.
+
+### 📊 Analyse Pareto (80/20)
+
+Pour atteindre **80 % du chiffre d’affaires total**, il faut environ :
+
+👉 **≈ 110 produits** (jusqu’à la ligne atteignant 80 %).
+
+Cela signifie que :
+
+* Le chiffre d’affaires est **relativement distribué**.
+* On n’est pas dans un modèle ultra concentré (type 20 % des produits = 80 % du CA).
+* Environ **un tiers du catalogue** génère l’essentiel du revenu.
+
+### 🎯 Conclusion
+
+* Les produits Mountain dominent en volume et en marge.
+* Le portefeuille est diversifié.
+* L’analyse Pareto confirme une concentration modérée du chiffre d’affaires.
+
+Cette étape illustre parfaitement l’utilisation combinée de :
+
+* `RANK()`
+* `SUM() OVER`
+* cumul progressif
+
+dans une logique BI décisionnelle.
+
