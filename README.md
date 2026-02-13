@@ -50,4 +50,4 @@
 
 [#1 - Construction d'un Data Warehouse et de Data Marts avec BigQuery - sections 1 à 4](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%205%20-%201.%20sections%201%20%C3%A0%204.md)
 
-[#2 - Construction d'un Data Warehouse et de Data Marts avec BigQuery - sections 5 - README](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%205%20-%202.%20README.md)
+**README final + KPI :** [#2 - Construction d'un Data Warehouse et de Data Marts avec BigQuery - sections 5 - README](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%205%20-%202.%20README.md)
