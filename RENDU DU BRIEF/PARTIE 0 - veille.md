@@ -116,4 +116,4 @@ BigQuery fournit une implémentation cloud moderne de ces principes, permettant 
 ---
 ---
 
-> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%201%20-%201-Analyse%20de%20la%20table%20FactResellerSales.md)
+> [SUITE DU RENDU ICI](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%201%20-%200-sources.md)

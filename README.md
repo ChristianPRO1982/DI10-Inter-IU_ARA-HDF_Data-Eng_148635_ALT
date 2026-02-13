@@ -20,6 +20,8 @@
 
 ## PARTIE 1
 
+[#0 - fichiers csv sources mis à jour + EDA](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%201%20-%200-sources.md)
+
 [#1 - Analyse de la table FactResellerSales](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%201%20-%201-Analyse%20de%20la%20table%20FactResellerSales.md)
 
 [#2 - Analyse des dimensions](https://github.com/ChristianPRO1982/DI10-Inter-IU_ARA-HDF_Data-Eng_148635_ALT/blob/main/RENDU%20DU%20BRIEF/PARTIE%201%20-%202-Analyse%20des%20dimensions.md)
